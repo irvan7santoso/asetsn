@@ -7,6 +7,7 @@ use App\Models\Asettlsn;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Models\ItemPeminjaman;
+use Illuminate\Support\Facades\Auth;
 
 class PeminjamanController extends Controller
 {
@@ -34,35 +35,42 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         $currentDate = now()->startOfDay();
 
         $validatedData = $request->validate([
-        'nama_peminjam' => 'required|string|max:255',
-        'nomor_hp_peminjam' => 'required|string|max:15',
-        'program' => 'required|string|max:255',
-        'judul_kegiatan' => 'required|string|max:255',
-        'lokasi_kegiatan' => 'required|string|max:255',
-        'tgl_peminjaman' => [
-            'required', 
-            'date', 
-            function ($attribute, $value, $fail) use ($currentDate) {
-                $minDate = $currentDate->copy()->addDays(3);
-                if (Carbon::parse($value)->lt($minDate)) {
-                    $fail('Tanggal peminjaman harus H+3 dari tanggal permohonan.');
+            'jenis_peminjam' => 'required|in:karyawan,non_karyawan',
+            'nama_peminjam' => 'required_if:jenis_peminjam,non_karyawan|string|max:255',
+            'nomor_hp_peminjam' => 'required_if:jenis_peminjam,non_karyawan|string|max:15',
+            'program' => 'required|string|max:255',
+            'judul_kegiatan' => 'required|string|max:255',
+            'lokasi_kegiatan' => 'required|string|max:255',
+            'tgl_peminjaman' => [
+                'required', 
+                'date', 
+                function ($attribute, $value, $fail) use ($currentDate) {
+                    $minDate = $currentDate->copy()->addDays(3);
+                    if (Carbon::parse($value)->lt($minDate)) {
+                        $fail('Tanggal peminjaman harus H+3 dari tanggal permohonan.');
+                    }
                 }
-            }
-        ],
-        'tgl_kembali' => [
-            'required', 
-            'date', 
-            'after_or_equal:tgl_peminjaman'
-        ],
-        'lampiran' => 'required|file',
-        'barang' => 'required|array',
-        'barang.*.id' => 'required|integer|exists:asettlsn,id',
-        'barang.*.jumlah_dipinjam' => 'required|integer|min:1',
+            ],
+            'tgl_kembali' => [
+                'required', 
+                'date', 
+                'after_or_equal:tgl_peminjaman'
+            ],
+            'lampiran' => 'required|file',
+            'barang' => 'required|array',
+            'barang.*.id' => 'required|integer|exists:asettlsn,id',
+            'barang.*.jumlah_dipinjam' => 'required|integer|min:1',
         ]);
+
+        // Jika karyawan, ambil data dari user yang sedang login
+        if ($request->jenis_peminjam == 'karyawan') {
+            $user = Auth::user();
+            $validatedData['nama_peminjam'] = $user->nama;
+            $validatedData['nomor_hp_peminjam'] = $user->nomor_hp;
+        }
 
         // Buat objek Peminjaman dan isi dengan data yang sudah divalidasi
         $peminjaman = new Peminjaman();
@@ -76,7 +84,7 @@ class PeminjamanController extends Controller
         $peminjaman->id_user = auth()->id();
         $peminjaman->lampiran = $request->file('lampiran')->store('lampiran');
         $peminjaman->save();
-        
+
         // Simpan setiap item peminjaman
         foreach ($validatedData['barang'] as $barang) {
             $itemPeminjaman = new ItemPeminjaman();
@@ -85,7 +93,7 @@ class PeminjamanController extends Controller
             $itemPeminjaman->jumlah_dipinjam = $barang['jumlah_dipinjam'];
             $itemPeminjaman->save();
         }
-        
+
         return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui');
     }
 }

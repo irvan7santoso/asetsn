@@ -21,4 +21,13 @@ class UserController extends Controller
     {
         return redirect('/dashboard');
     }
+
+    public function getUserInfo()
+    {
+        $user = Auth::user();
+        return response()->json([
+            'nama' => $user->nama,
+            'nomor_hp' => $user->nomor_hp,
+        ]);
+    }
 }

@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/peminjaman/create', [PeminjamanController::class, 'store']);
 });
 
+Route::get('/api/user-info', [UserController::class, 'getUserInfo']);
+
 Route::get('/welcome', function () {
     return view('welcome');
 });
