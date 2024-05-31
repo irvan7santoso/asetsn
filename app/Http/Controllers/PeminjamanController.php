@@ -39,8 +39,6 @@ class PeminjamanController extends Controller
 
         $validatedData = $request->validate([
             'jenis_peminjam' => 'required|in:karyawan,non_karyawan',
-            'nama_peminjam' => 'required_if:jenis_peminjam,non_karyawan|string|max:255',
-            'nomor_hp_peminjam' => 'required_if:jenis_peminjam,non_karyawan|string|max:15',
             'program' => 'required|string|max:255',
             'judul_kegiatan' => 'required|string|max:255',
             'lokasi_kegiatan' => 'required|string|max:255',
@@ -67,15 +65,17 @@ class PeminjamanController extends Controller
 
         // Jika karyawan, ambil data dari user yang sedang login
         if ($request->jenis_peminjam == 'karyawan') {
-            $user = Auth::user();
-            $validatedData['nama_peminjam'] = $user->nama;
-            $validatedData['nomor_hp_peminjam'] = $user->nomor_hp;
+            $nama_peminjam = $request->nama_karyawan;
+            $nomor_hp_peminjam = $request->nomor_hp_karyawan;
+        } else {
+            $nama_peminjam = $request->nama_peminjam;
+            $nomor_hp_peminjam = $request->nomor_hp_peminjam;
         }
 
         // Buat objek Peminjaman dan isi dengan data yang sudah divalidasi
         $peminjaman = new Peminjaman();
-        $peminjaman->nama_peminjam = $validatedData['nama_peminjam'];
-        $peminjaman->nomor_hp_peminjam = $validatedData['nomor_hp_peminjam'];
+        $peminjaman->nama_peminjam = $nama_peminjam;
+        $peminjaman->nomor_hp_peminjam = $nomor_hp_peminjam;
         $peminjaman->program = $validatedData['program'];
         $peminjaman->judul_kegiatan = $validatedData['judul_kegiatan'];
         $peminjaman->lokasi_kegiatan = $validatedData['lokasi_kegiatan'];

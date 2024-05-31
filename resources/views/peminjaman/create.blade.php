@@ -11,17 +11,22 @@
                 <form action="/peminjaman" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="jenis_peminjam">Jenis Peminjam</label>
-                        <select id="jenis_peminjam" class="form-control" name="jenis_peminjam" required>
-                            <option value="">-- Pilih Jenis Peminjam --</option>
-                            <option value="karyawan">Karyawan</option>
-                            <option value="non_karyawan">Non Karyawan</option>
-                        </select>
+                        <label>Jenis Peminjam</label>
+                        <div class="radio-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_peminjam" id="karyawan" value="karyawan" checked required>
+                                <label class="form-check-label" for="karyawan">Karyawan</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_peminjam" id="non_karyawan" value="non_karyawan" required>
+                                <label class="form-check-label" for="non_karyawan">Non Karyawan</label>
+                            </div>
+                        </div>
                     </div>
                     
                     <div id="form_peminjam">
                         <!-- Form Karyawan -->
-                        <div id="form_karyawan" style="display: none;">
+                        <div id="form_karyawan">
                             <div class="form-group">
                                 <label for="nama_karyawan">Nama Peminjam</label>
                                 <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" readonly>
@@ -100,23 +105,36 @@
     </div>
 </div>
 
-<script>
-document.getElementById('jenis_peminjam').addEventListener('change', function() {
-    var jenis = this.value;
-    document.getElementById('form_karyawan').style.display = (jenis == 'karyawan') ? 'block' : 'none';
-    document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
+<style>
+.radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+</style>
 
-    if (jenis == 'karyawan') {
-        fetch('/api/user-info')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('nama_karyawan').value = data.nama;
-                document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
-            });
-    } else {
-        document.getElementById('nama_karyawan').value = '';
-        document.getElementById('nomor_hp_karyawan').value = '';
-    }
+<script>
+document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
+    elem.addEventListener('change', function() {
+        var jenis = this.value;
+        document.getElementById('form_karyawan').style.display = (jenis == 'karyawan') ? 'block' : 'none';
+        document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
+
+        if (jenis == 'karyawan') {
+            fetch('/api/user-info')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('nama_karyawan').value = data.nama;
+                    document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
+                });
+        } else {
+            document.getElementById('nama_karyawan').value = '';
+            document.getElementById('nomor_hp_karyawan').value = '';
+        }
+    });
 });
+
+// Trigger change event on page load to set the default view
+document.getElementById('karyawan').dispatchEvent(new Event('change'));
 </script>
 @endsection
