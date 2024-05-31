@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Program;
 use App\Models\Asettlsn;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
@@ -29,8 +30,11 @@ class PeminjamanController extends Controller
             'pinjam_barang' => 'required|array',
             'pinjam_barang.*' => 'exists:asettlsn,id',
         ]);
+
         $selectedAssets = Asettlsn::whereIn('id', $request->pinjam_barang)->get();
-        return view('peminjaman.create', compact('selectedAssets'));
+        $programs = Program::all(); // Ambil semua data program
+
+        return view('peminjaman.create', compact('selectedAssets', 'programs')); // Kirim data program ke view
     }
 
     public function store(Request $request)

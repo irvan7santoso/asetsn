@@ -4,7 +4,6 @@
 <div class="main-content">
     @include('layouts.alert')
     <div class="container-fluid">
-        <!-- TABLE HOVER -->
         <div class="panel">
             <div class="panel-body">
                 <h1>Form Peminjaman Aset</h1>
@@ -35,6 +34,25 @@
                                 <label for="nomor_hp_karyawan">Nomor HP</label>
                                 <input type="text" class="form-control" id="nomor_hp_karyawan" name="nomor_hp_karyawan" readonly>
                             </div>
+                            <div class="form-group">
+                                <label for="program">Program</label>
+                                <select class="form-control" id="program" name="program" required>
+                                    <option value="">Pilih Program</option>
+                                    @foreach($programs as $program)
+                                        <option value="{{ $program->nama_program }}" data-judul="{{ $program->judul_kegiatan }}" data-lokasi="{{ $program->lokasi_kegiatan }}">
+                                            {{ $program->nama_program }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="judul_kegiatan">Judul Kegiatan</label>
+                                <input type="text" class="form-control" id="judul_kegiatan" name="judul_kegiatan" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+                                <input type="text" class="form-control" id="lokasi_kegiatan" name="lokasi_kegiatan" readonly>
+                            </div>
                         </div>
 
                         <!-- Form Non Karyawan -->
@@ -50,18 +68,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="program">Program</label>
-                        <input type="text" class="form-control" id="program" name="program" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="judul_kegiatan">Judul Kegiatan</label>
-                        <input type="text" class="form-control" id="judul_kegiatan" name="judul_kegiatan" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
-                        <input type="text" class="form-control" id="lokasi_kegiatan" name="lokasi_kegiatan" required>
-                    </div>
                     <div class="form-group">
                         <label for="tanggal_peminjaman">Tanggal Peminjaman</label>
                         <input type="date" class="form-control" id="tgl_peminjaman" name="tgl_peminjaman" required>
@@ -132,6 +138,12 @@ document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
             document.getElementById('nomor_hp_karyawan').value = '';
         }
     });
+});
+
+document.getElementById('program').addEventListener('change', function() {
+    var selectedOption = this.options[this.selectedIndex];
+    document.getElementById('judul_kegiatan').value = selectedOption.getAttribute('data-judul');
+    document.getElementById('lokasi_kegiatan').value = selectedOption.getAttribute('data-lokasi');
 });
 
 // Trigger change event on page load to set the default view
