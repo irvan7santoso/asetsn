@@ -67,10 +67,18 @@
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
-						<li><a href="/dashboard" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-						<li><a href="/Asettlsn" class=""><i class="lnr lnr-apartment"></i> <span>Daftar Aset </span></a></li>
-						<li><a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a></li>
-						<li><a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Aset</span></a></li>
+						<li class="{{ Request::is('dashboard') ? 'active' : '' }}">
+							<a href="/dashboard" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
+						</li>
+						<li class="{{ Request::is('Asettlsn') ? 'active' : '' }}">
+							<a href="/Asettlsn" class=""><i class="lnr lnr-apartment"></i> <span>Daftar Aset</span></a>
+						</li>
+						<li class="{{ Request::is('peminjaman') ? 'active' : '' }}">
+							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a>
+						</li>
+						<li class="{{ Request::is('approve') ? 'active' : '' }}">
+							<a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Aset</span></a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -136,8 +144,10 @@
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
-						<li><a href="/welcome" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-						<li><a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset/Alat</span></a></li>
+						<li class="{{ Request::is('welcome') ? 'active' : '' }}">
+							<a href="/welcome" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+						<li class="{{ Request::is('peminjaman') ? 'active' : '' }}">
+							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a></li>
 					</ul>
 				</nav>
 			</div>
@@ -176,5 +186,10 @@
   		color: #b5b5b5;
   		background-color: #327e33;
 	}
+	.sidebar .nav > li.active > a {
+		color: #48ff00;
+        background-color: #1b2d1f;
+      	border-left-color: #41B314;
+    }
 </style>
 </html>
