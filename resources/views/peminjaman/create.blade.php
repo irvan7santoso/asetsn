@@ -7,7 +7,7 @@
         <div class="panel">
             <div class="panel-body">
                 <h1>Form Peminjaman Aset</h1>
-                <form action="/peminjaman" method="POST" enctype="multipart/form-data">
+                <form id="peminjamanForm" action="/peminjaman" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Jenis Peminjam</label>
@@ -59,11 +59,15 @@
                         <div id="form_non_karyawan" style="display: none;">
                             <div class="form-group">
                                 <label for="nama_peminjam">Nama Peminjam</label>
-                                <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam">
+                                <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam" required>
                             </div>
                             <div class="form-group">
                                 <label for="nomor_hp_peminjam">Nomor HP</label>
-                                <input type="text" class="form-control" id="nomor_hp_peminjam" name="nomor_hp_peminjam">
+                                <input type="text" class="form-control" id="nomor_hp_peminjam" name="nomor_hp_peminjam" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="program_non_karyawan">Alasan Peminjaman</label>
+                                <input type="text" class="form-control" id="program_non_karyawan" name="program_non_karyawan" required>
                             </div>
                         </div>
                     </div>
@@ -78,7 +82,7 @@
                     </div>
                     <div class="form-group">
                         <label for="lampiran">Lampiran</label>
-                        <input type="file" class="form-control" id="lampiran" name="lampiran">
+                        <input type="file" class="form-control" id="lampiran" name="lampiran" required>
                     </div>
                     
                     <h3>Aset yang akan dipinjam</h3>
@@ -97,7 +101,6 @@
                                     <input type="hidden" name="barang[{{ $asset->id }}][id]" value="{{ $asset->id }}">
                                     <input type="number" name="barang[{{ $asset->id }}][jumlah_dipinjam]" class="form-control" max="{{ $asset->jumlah_tersedia }}" required>
                                 </td>
-                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -127,6 +130,10 @@ document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
         document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
 
         if (jenis == 'karyawan') {
+            document.getElementById('program').setAttribute('required', 'required');
+            document.getElementById('program_non_karyawan').removeAttribute('required');
+            document.getElementById('nama_peminjam').removeAttribute('required');
+            document.getElementById('nomor_hp_peminjam').removeAttribute('required');
             fetch('/api/user-info')
                 .then(response => response.json())
                 .then(data => {
@@ -134,6 +141,10 @@ document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
                     document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
                 });
         } else {
+            document.getElementById('program_non_karyawan').setAttribute('required', 'required');
+            document.getElementById('program').removeAttribute('required');
+            document.getElementById('nama_karyawan').removeAttribute('required');
+            document.getElementById('nomor_hp_karyawan').removeAttribute('required');
             document.getElementById('nama_karyawan').value = '';
             document.getElementById('nomor_hp_karyawan').value = '';
         }
@@ -146,7 +157,7 @@ document.getElementById('program').addEventListener('change', function() {
     document.getElementById('lokasi_kegiatan').value = selectedOption.getAttribute('data-lokasi');
 });
 
-// Trigger change event on page load to set the default view
-document.getElementById('karyawan').dispatchEvent(new Event('change'));
+// Trigger change event on page load
+document.querySelector('input[name="jenis_peminjam"]:checked').dispatchEvent(new Event('change'));
 </script>
 @endsection

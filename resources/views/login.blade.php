@@ -30,7 +30,7 @@
 						<div class="content">
 							<div class="header">
 								<div class="logo text-center"><img src="assets/img/satunamalogo1.png" alt="Satunama Logo"></div>
-								<p class="lead">Login to your account</p>
+								<p class="lead">Login ke akun anda</p>
 							</div>
 							@if($errors->any())
 								<div class="alert alert-danger text-center">

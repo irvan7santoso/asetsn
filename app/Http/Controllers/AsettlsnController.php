@@ -8,31 +8,42 @@ use Illuminate\Http\Request;
 
 class AsettlsnController extends Controller
 {
-    /**
-     * 
-     * Display a listing of the resource.
-     */
-    
     public function index(Request $request)
     {
         $katakunci = $request->katakunci;
+        $sortby = $request->sortby;
+        $order = $request->order == 'desc' ? 'desc' : 'asc'; // Default ke ascending jika tidak ada order atau bukan 'desc'
         $jumlahbaris = 10;
-        if (strlen($katakunci)) {
-            $data = Asettlsn::where('namabarang', 'like',"%$katakunci%")
-                -> orWhere('tahun', 'like',"%$katakunci%")
-                -> orWhere('jumlah', 'like',"%$katakunci%")
-                -> orWhere('nomorseri', 'like',"%$katakunci%")
-                -> orWhere('nomorinventaris', 'like',"%$katakunci%")
-                -> orWhere('harga', 'like',"%$katakunci%")
-                -> orWhere('lokasi', 'like',"%$katakunci%")
-                -> orWhere('pemakai', 'like',"%$katakunci%")
-                -> orWhere('kondisi', 'like',"%$katakunci%")
-                -> paginate($jumlahbaris);
-        } else{
-            $data = Asettlsn::orderBy('namabarang','asc')->paginate($jumlahbaris);
+        
+        $query = Asettlsn::query();
+
+        if ($katakunci) {
+            $query->where('namabarang', 'like', "%$katakunci%")
+                ->orWhere('tahun', 'like', "%$katakunci%")
+                ->orWhere('jumlah', 'like', "%$katakunci%")
+                ->orWhere('nomorinventaris', 'like', "%$katakunci%")
+                ->orWhere('nomorseri', 'like', "%$katakunci%")
+                ->orWhere('harga', 'like', "%$katakunci%")
+                ->orWhere('lokasi', 'like', "%$katakunci%")
+                ->orWhere('pemakai', 'like', "%$katakunci%")
+                ->orWhere('kondisi', 'like', "%$katakunci%");
         }
-        return view('aset.aset')->with('data',$data);
+
+        if ($sortby) {
+            $query->orderBy($sortby, $order);
+        } else {
+            $query->orderBy('namabarang', 'asc');
+        }
+
+        $data = $query->paginate($jumlahbaris);
+
+        return view('aset.aset', [
+            'data' => $data,
+            'sortby' => $sortby,
+            'order' => $order,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

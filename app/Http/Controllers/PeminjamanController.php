@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PeminjamanController extends Controller
 {
-
     public function index(Request $request)
     {
         $katakunci = $request->katakunci;
@@ -41,14 +40,11 @@ class PeminjamanController extends Controller
     {
         $currentDate = now()->startOfDay();
 
-        $validatedData = $request->validate([
+        $rules = [
             'jenis_peminjam' => 'required|in:karyawan,non_karyawan',
-            'program' => 'required|string|max:255',
-            'judul_kegiatan' => 'required|string|max:255',
-            'lokasi_kegiatan' => 'required|string|max:255',
             'tgl_peminjaman' => [
-                'required', 
-                'date', 
+                'required',
+                'date',
                 function ($attribute, $value, $fail) use ($currentDate) {
                     $minDate = $currentDate->copy()->addDays(3);
                     if (Carbon::parse($value)->lt($minDate)) {
@@ -57,39 +53,50 @@ class PeminjamanController extends Controller
                 }
             ],
             'tgl_kembali' => [
-                'required', 
-                'date', 
+                'required',
+                'date',
                 'after_or_equal:tgl_peminjaman'
             ],
             'lampiran' => 'required|file',
             'barang' => 'required|array',
             'barang.*.id' => 'required|integer|exists:asettlsn,id',
             'barang.*.jumlah_dipinjam' => 'required|integer|min:1',
-        ]);
+        ];
 
-        // Jika karyawan, ambil data dari user yang sedang login
+        if ($request->jenis_peminjam == 'karyawan') {
+            $rules['program'] = 'required|string|max:255';
+        } else {
+            $rules['program_non_karyawan'] = 'required|string|max:255';
+        }
+
+        $validatedData = $request->validate($rules);
+
         if ($request->jenis_peminjam == 'karyawan') {
             $nama_peminjam = $request->nama_karyawan;
             $nomor_hp_peminjam = $request->nomor_hp_karyawan;
+            $program = $validatedData['program'] ?? '';
+            $judul_kegiatan = $request->judul_kegiatan ?? '';
+            $lokasi_kegiatan = $request->lokasi_kegiatan ?? '';
         } else {
             $nama_peminjam = $request->nama_peminjam;
             $nomor_hp_peminjam = $request->nomor_hp_peminjam;
+            $program = $validatedData['program_non_karyawan'] ?? '';
+            $judul_kegiatan = $validatedData['judul_kegiatan_non_karyawan'] ?? '';
+            $lokasi_kegiatan = $validatedData['lokasi_kegiatan_non_karyawan'] ?? '';
         }
 
-        // Buat objek Peminjaman dan isi dengan data yang sudah divalidasi
         $peminjaman = new Peminjaman();
         $peminjaman->nama_peminjam = $nama_peminjam;
         $peminjaman->nomor_hp_peminjam = $nomor_hp_peminjam;
-        $peminjaman->program = $validatedData['program'];
-        $peminjaman->judul_kegiatan = $validatedData['judul_kegiatan'];
-        $peminjaman->lokasi_kegiatan = $validatedData['lokasi_kegiatan'];
+        $peminjaman->program = $program;
+        $peminjaman->judul_kegiatan = $judul_kegiatan;
+        $peminjaman->lokasi_kegiatan = $lokasi_kegiatan;
         $peminjaman->tgl_peminjaman = $validatedData['tgl_peminjaman'];
         $peminjaman->tgl_kembali = $validatedData['tgl_kembali'];
         $peminjaman->id_user = auth()->id();
         $peminjaman->lampiran = $request->file('lampiran')->store('lampiran');
         $peminjaman->save();
 
-        // Simpan setiap item peminjaman
         foreach ($validatedData['barang'] as $barang) {
             $itemPeminjaman = new ItemPeminjaman();
             $itemPeminjaman->id_aset = $barang['id'];
@@ -100,4 +107,5 @@ class PeminjamanController extends Controller
 
         return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui');
     }
+
 }

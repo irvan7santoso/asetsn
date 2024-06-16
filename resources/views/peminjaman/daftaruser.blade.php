@@ -5,13 +5,13 @@
     <div class="container-fluid">
         <div class="panel">
             <div class="panel-body">
-            <h1>Daftar Permohonan Peminjaman Aset</h1>
+            <h1>Daftar Peminjaman Saya</h1>
             <div class="btn-group" role="group">
-                <a href="{{ route('approve.index', ['status' => 'Pending']) }}" class="btn btn-default {{ request('status', 'Pending') == 'Pending' ? 'active' : '' }}">Pending</a>
-                <a href="{{ route('approve.index', ['status' => 'Disetujui']) }}" class="btn btn-default {{ request('status') == 'Disetujui' ? 'active' : '' }}">Disetujui</a>
-                <a href="{{ route('approve.index', ['status' => 'Ditolak']) }}" class="btn btn-default {{ request('status') == 'Ditolak' ? 'active' : '' }}">Ditolak</a>
-                <a href="{{ route('approve.index', ['status' => 'Selesai']) }}" class="btn btn-default {{ request('status') == 'Selesai' ? 'active' : '' }}">Selesai</a>
-                <a href="{{ route('approve.index', ['status' => 'Melewati Batas Waktu']) }}" class="btn btn-default {{ request('status') == 'Melewati Batas Waktu' ? 'active' : '' }}">Melewati Batas Waktu</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-default {{ request('status', 'Pending') == 'Pending' ? 'active' : '' }}">Pending</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Disetujui']) }}" class="btn btn-default {{ request('status') == 'Disetujui' ? 'active' : '' }}">Disetujui</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Ditolak']) }}" class="btn btn-default {{ request('status') == 'Ditolak' ? 'active' : '' }}">Ditolak</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Selesai']) }}" class="btn btn-default {{ request('status') == 'Selesai' ? 'active' : '' }}">Selesai</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Melewati Batas Waktu']) }}" class="btn btn-default {{ request('status') == 'Melewati Batas Waktu' ? 'active' : '' }}">Melewati Batas Waktu</a>
             </div>
 
             <table class="table table-hover mt-3">

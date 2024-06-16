@@ -42,6 +42,7 @@ Route::resource('/Asettlsn', AsettlsnController::class);
 Route::get('/approve', [ApproveController::class, 'index'])->name('approve.index');
 Route::get('/approve/{id}', [ApproveController::class, 'show'])->name('approve.show');
 Route::post('/approve/{id}', [ApproveController::class, 'update'])->name('approve.update');
+Route::get('/peminjamansaya', [ApproveController::class, 'userIndex'])->name('peminjaman.user');
 
 
 Route::middleware(['auth'])->group(function(){

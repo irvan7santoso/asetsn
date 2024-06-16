@@ -9,10 +9,23 @@ use Illuminate\Http\Request;
 
 class ApproveController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjaman = Peminjaman::orderBy('created_at', 'desc')->get();
+        $status = $request->input('status', 'Pending'); // Default to 'Pending' if no status is provided
+        $peminjaman = Peminjaman::where('status', $status)->orderBy('created_at', 'desc')->get();
         return view('approve.daftar', compact('peminjaman'));
+    }
+
+    public function userIndex(Request $request)
+    {
+        $user = auth()->user(); // Mendapatkan user yang sedang login
+        $status = $request->input('status', 'Pending'); // Mendapatkan status dari request atau default ke 'Pending'
+
+        $peminjaman = Peminjaman::where('id_user', $user->id)
+                        ->where('status', $status)
+                        ->get(); // Mengambil data peminjaman berdasarkan user dan status
+
+        return view('peminjaman.daftaruser', compact('peminjaman', 'status'));
     }
 
     public function show($id)
@@ -59,5 +72,4 @@ class ApproveController extends Controller
 
         return redirect()->route('approve.index')->with('success', 'Status permohonan berhasil diperbarui.');
     }
-
 }

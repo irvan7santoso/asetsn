@@ -54,7 +54,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ asset ('assets/img/user.png') }}" class="img-circle" alt="Avatar"> <span>{{ Auth::user()-> nama}}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
 								<li><a href="/akun"><i class="lnr lnr-user"></i> <span>Akun</span></a></li>
-								<li><a href="/logout"><i class="lnr lnr-exit"></i> <span>Keluar</span></a></li>
+								<li><a href="/logout"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -78,6 +78,9 @@
 						</li>
 						<li class="{{ Request::is('approve') ? 'active' : '' }}">
 							<a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Aset</span></a>
+						</li>
+						<li class="{{ Request::is('peminjamansaya') ? 'active' : '' }}">
+							<a href="/peminjamansaya" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Saya</span></a>
 						</li>
 					</ul>
 				</nav>
@@ -131,7 +134,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ asset ('assets/img/user.png') }}" class="img-circle" alt="Avatar"> <span>{{ Auth::user()-> nama}}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
 								<li><a href="/akun"><i class="lnr lnr-user"></i> <span>Akun</span></a></li>
-								<li><a href="/logout"><i class="lnr lnr-exit"></i> <span>Keluar</span></a></li>
+								<li><a href="/logout"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -145,9 +148,14 @@
 				<nav>
 					<ul class="nav">
 						<li class="{{ Request::is('welcome') ? 'active' : '' }}">
-							<a href="/welcome" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+							<a href="/welcome" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
+						</li>
 						<li class="{{ Request::is('peminjaman') ? 'active' : '' }}">
-							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a></li>
+							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a>
+						</li>
+						<li class="{{ Request::is('peminjamansaya') ? 'active' : '' }}">
+							<a href="/peminjamansaya" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Saya</span></a>
+						</li>
 					</ul>
 				</nav>
 			</div>

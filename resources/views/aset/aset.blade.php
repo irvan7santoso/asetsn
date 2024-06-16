@@ -1,70 +1,76 @@
 @extends('layouts.main')
 
 @section('container')
-    <div class="main-content">
-      @include('layouts.alert')
-        <div class="container-fluid">
-            <!-- TABLE HOVER -->
-            <div class="panel">
-            <div class="panel-body">
-              <h1>Daftar Aset Yayasan Satunama</h1>
-              <form class="search-left" action="{{ url('Asettlsn') }}" method="get">
-                <div class="input-group">
-                  <input type="search" class="form-control" name='katakunci' value="{{ Request::get('katakunci') }}" placeholder="Cari Aset/Alat">
-                  <span class="input-group-btn"><button type="submit" class="btn btn-success">Cari</button></span>
-                </div>
-              </form>
-              <div class="row">
-                <div class="text-right"><a href="/Asettlsn/create" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Aset</a></div>
-              </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Nama Aset/Alat</th>
-                            <th>Tahun</th>
-                            <th>Jumlah</th>
-                            <th>Nomor Inventaris</th>
-                            <th>Nomor Seri</th>
-                            <th>Harga</th>
-                            <th>Lokasi</th>
-                            <th>Kondisi</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <?php $i = $data->firstItem() ?>
-                      @foreach ($data as $item)
-                      <tr>
-                        <td>{{ $i }}</td>
-                        <td>{{ $item->namabarang }}</td>
-                        <td>{{ $item->tahun }}</td>
-                        <td>{{ $item->jumlah }}</td>
-                        <td>{{ $item->nomorinventaris }}</td>
-                        <td>{{ $item->nomorseri }}</td>
-                        <td>{{ $item->harga }}</td>
-                        <td>{{ $item->lokasi }}</td>
-                        <td>{{ $item->kondisi }}</td>
-                        <td>
-                          <a href='{{ url('Asettlsn/'.$item->id.'/edit') }}' class="btn btn-warning btn-xs"><i class="lnr lnr-pencil"></i></a>
-                          <form onsubmit="return confirm('Apakah anda yakin menghapus data ini?')" class='inline' action="{{ url('Asettlsn/'.$item->id) }}" style="display: inline;" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" name="submit" class="btn btn-danger btn-xs"><i class="lnr lnr-trash"></i></button>
-                          </form>
-                        </td>
-                      </tr>
-                      <?php $i++ ?>
-                      @endforeach
-                    </tbody>
-                </table>
-                {{ $data->Links() }}
+<div class="main-content">
+  @include('layouts.alert')
+    <div class="container-fluid">
+        <!-- TABLE HOVER -->
+        <div class="panel">
+        <div class="panel-body">
+          <h1>Daftar Aset Yayasan Satunama</h1>
+          <form class="search-left" action="{{ url('Asettlsn') }}" method="get">
+            <div class="input-group">
+              <input type="search" class="form-control" name='katakunci' value="{{ Request::get('katakunci') }}" placeholder="Cari Aset/Alat">
+              <span class="input-group-btn"><button type="submit" class="btn btn-success">Cari</button></span>
             </div>
+          </form>
+          <div class="row">
+            <div class="text-right"><a href="/Asettlsn/create" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Aset</a></div>
+          </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th><a href="{{ url('Asettlsn?sortby=namabarang&order=' . ($sortby == 'namabarang' && $order == 'asc' ? 'desc' : 'asc')) }}">Nama Aset/Alat</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=tahun&order=' . ($sortby == 'tahun' && $order == 'asc' ? 'desc' : 'asc')) }}">Tahun</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=jumlah&order=' . ($sortby == 'jumlah' && $order == 'asc' ? 'desc' : 'asc')) }}">Jumlah</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=nomorinventaris&order=' . ($sortby == 'nomorinventaris' && $order == 'asc' ? 'desc' : 'asc')) }}">Nomor Inventaris</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=nomorseri&order=' . ($sortby == 'nomorseri' && $order == 'asc' ? 'desc' : 'asc')) }}">Nomor Seri</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=harga&order=' . ($sortby == 'harga' && $order == 'asc' ? 'desc' : 'asc')) }}">Harga</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=lokasi&order=' . ($sortby == 'lokasi' && $order == 'asc' ? 'desc' : 'asc')) }}">Lokasi</a></th>
+                        <th><a href="{{ url('Asettlsn?sortby=kondisi&order=' . ($sortby == 'kondisi' && $order == 'asc' ? 'desc' : 'asc')) }}">Kondisi</a></th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <?php $i = $data->firstItem() ?>
+                  @foreach ($data as $item)
+                  <tr>
+                    <td>{{ $i }}</td>
+                    <td>{{ $item->namabarang }}</td>
+                    <td>{{ $item->tahun }}</td>
+                    <td>{{ $item->jumlah }}</td>
+                    <td>{{ $item->nomorinventaris }}</td>
+                    <td>{{ $item->nomorseri }}</td>
+                    <td>{{ 'Rp ' . number_format($item->harga, 0, ',', '.') }}</td>
+                    <td>{{ $item->lokasi }}</td>
+                    <td>{{ $item->kondisi }}</td>
+                    <td>
+                      <a href='{{ url('Asettlsn/'.$item->id.'/edit') }}' class="btn btn-warning btn-xs"><i class="lnr lnr-pencil"></i></a>
+                      <form onsubmit="return confirm('Apakah anda yakin menghapus data ini?')" class='inline' action="{{ url('Asettlsn/'.$item->id) }}" style="display: inline;" method="post">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" name="submit" class="btn btn-danger btn-xs"><i class="lnr lnr-trash"></i></button>
+                      </form>
+                    </td>
+                  </tr>
+                  <?php $i++ ?>
+                  @endforeach
+                </tbody>
+            </table>
+            {{ $data->appends(request()->except('page'))->links() }}
         </div>
     </div>
- </div>
+</div>
+</div>
 
  <style>
+a {
+  color: #242424; }
+  a:hover, a:focus {
+    color: #4f8d25;
+    text-decoration: none; }
+
 .search-left{
   float:  left !important;
 }
