@@ -47,7 +47,6 @@ Route::get('/peminjamansaya', [ApproveController::class, 'userIndex'])->name('pe
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/peminjaman', [PeminjamanController::class, 'index']);
-    Route::post('/peminjaman', [PeminjamanController::class, 'store']);
     Route::get('/peminjaman/create', [PeminjamanController::class, 'create']);
     Route::post('/peminjaman/create', [PeminjamanController::class, 'store']);
 });

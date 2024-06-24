@@ -22,7 +22,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div id="form_peminjam">
                         <!-- Form Karyawan -->
                         <div id="form_karyawan">
@@ -54,7 +53,6 @@
                                 <input type="text" class="form-control" id="lokasi_kegiatan" name="lokasi_kegiatan" readonly>
                             </div>
                         </div>
-
                         <!-- Form Non Karyawan -->
                         <div id="form_non_karyawan" style="display: none;">
                             <div class="form-group">
@@ -71,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-
+    
                     <div class="form-group">
                         <label for="tanggal_peminjaman">Tanggal Peminjaman</label>
                         <input type="date" class="form-control" id="tgl_peminjaman" name="tgl_peminjaman" required>
@@ -99,8 +97,9 @@
                                 <td>{{ $asset->namabarang }}</td>
                                 <td>
                                     <input type="hidden" name="barang[{{ $asset->id }}][id]" value="{{ $asset->id }}">
-                                    <input type="number" name="barang[{{ $asset->id }}][jumlah_dipinjam]" class="form-control" max="{{ $asset->jumlah_tersedia }}" required>
+                                    <input type="number" name="barang[{{ $asset->id }}][jumlah_dipinjam]" class="form-control" max="{{ $asset->jumlah }}" value="{{ $asset->jumlah_dipinjam }}" required>
                                 </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -113,7 +112,6 @@
         </div>
     </div>
 </div>
-
 <style>
 .radio-group {
     display: flex;
@@ -121,7 +119,6 @@
     gap: 20px;
 }
 </style>
-
 <script>
 document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
     elem.addEventListener('change', function() {
@@ -160,4 +157,5 @@ document.getElementById('program').addEventListener('change', function() {
 // Trigger change event on page load
 document.querySelector('input[name="jenis_peminjam"]:checked').dispatchEvent(new Event('change'));
 </script>
-@endsection
+
+@endsection    

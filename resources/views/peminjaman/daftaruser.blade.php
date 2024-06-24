@@ -42,7 +42,7 @@
                                 {{ ucfirst($pinjam->status) }}
                             </span>
                         </td>
-                        <td><a href="{{ route('approve.show', $pinjam->id_peminjaman) }}" class="btn btn-success">Detail</a></td>
+                        <td><a href="" class="btn btn-success">Detail</a></td>
                     </tr>
                     @endforeach
                 </tbody>

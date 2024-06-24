@@ -25,16 +25,22 @@ class PeminjamanController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'pinjam_barang' => 'required|array',
-            'pinjam_barang.*' => 'exists:asettlsn,id',
-        ]);
+        $selectedAssetsData = $request->input('pinjam_barang', []);
+        $selectedAssets = [];
 
-        $selectedAssets = Asettlsn::whereIn('id', $request->pinjam_barang)->get();
+        foreach ($selectedAssetsData as $data) {
+            $asset = Asettlsn::find($data['id']);
+            if ($asset) {
+                $asset->jumlah_dipinjam = $data['jumlah_dipinjam'];
+                $selectedAssets[] = $asset;
+            }
+        }
+
         $programs = Program::all(); // Ambil semua data program
 
-        return view('peminjaman.create', compact('selectedAssets', 'programs')); // Kirim data program ke view
+        return view('peminjaman.create', compact('selectedAssets', 'programs'));
     }
+
 
     public function store(Request $request)
     {
