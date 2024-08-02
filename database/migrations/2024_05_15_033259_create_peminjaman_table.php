@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('nama_peminjam');
             $table->string('nomor_hp_peminjam');
             $table->string('program');
-            $table->string('judul_kegiatan');
-            $table->string('lokasi_kegiatan');
+            $table->string('judul_kegiatan')->nullable();
+            $table->string('lokasi_kegiatan')->nullable();
             $table->date('tgl_peminjaman');
             $table->date('tgl_kembali');
             $table->binary('lampiran')->nullable();
             $table->text('catatan')->nullable();
-            $table->enum('status',['Pending','Disetujui','Ditolak','Selesai','Melebihi batas waktu'])->default('Pending');
+            $table->enum('status',['Pending','Disetujui','Dipinjam','Ditolak','Pengembalian','Selesai','Melebihi batas waktu'])->default('Pending');
             $table->timestamps();
         });
     }

@@ -77,7 +77,7 @@
 							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a>
 						</li>
 						<li class="{{ Request::is('approve') ? 'active' : '' }}">
-							<a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Aset</span></a>
+							<a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Permohonan Peminjaman Aset</span></a>
 						</li>
 						<li class="{{ Request::is('peminjamansaya') ? 'active' : '' }}">
 							<a href="/peminjamansaya" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Saya</span></a>

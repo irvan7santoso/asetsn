@@ -43,6 +43,8 @@ Route::get('/approve', [ApproveController::class, 'index'])->name('approve.index
 Route::get('/approve/{id}', [ApproveController::class, 'show'])->name('approve.show');
 Route::post('/approve/{id}', [ApproveController::class, 'update'])->name('approve.update');
 Route::get('/peminjamansaya', [ApproveController::class, 'userIndex'])->name('peminjaman.user');
+Route::get('/peminjaman/{id}/detail', [ApproveController::class, 'userShow'])->name('peminjaman.userShow');
+Route::post('/peminjaman/{id}/update', [ApproveController::class, 'userUpdate'])->name('peminjaman.userUpdate');
 
 
 Route::middleware(['auth'])->group(function(){

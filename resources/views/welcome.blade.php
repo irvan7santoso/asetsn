@@ -40,6 +40,37 @@ use App\Models\asettlsn;
 .ct-series-c .ct-slice-pie{
     fill:#ffff00a0;
 }
+
+.label-pending {
+    background-color: #d3d3d3; /* Warna abu-abu */
+    color: #000; /* Warna teks */
+}
+
+.label-disetujui {
+    background-color: #007bff; /* Warna biru */
+    color: #fff; /* Warna teks */
+}
+
+.label-dipinjam {
+    background-color: #ffeb3b; /* Warna kuning */
+    color: #000; /* Warna teks */
+}
+
+.label-pengembalian {
+    background-color: #ff9800; /* Warna oren */
+    color: #fff; /* Warna teks */
+}
+
+.label-selesai {
+    background-color: #28a745; /* Warna hijau */
+    color: #fff; /* Warna teks */
+}
+
+.label-ditolak,
+.label-melewati-batas-waktu {
+    background-color: #dc3545; /* Warna merah */
+    color: #fff; /* Warna teks */
+}
 </style>
     <!-- MAIN CONTENT -->   
     <div class="main-content">
@@ -117,12 +148,15 @@ use App\Models\asettlsn;
                                             <td>{{ $peminjaman->created_at->format('d M Y H:i') }}</td>
                                             <td>
                                                 <span class="label label-{{ 
-                                                $peminjaman->status == 'Disetujui' ? 'primary' : (
-                                                $peminjaman->status == 'Pending' ? 'warning' : (
-                                                $peminjaman->status == 'Ditolak' || $peminjaman->status == 'Melewati Batas Waktu' ? 'danger' : (
-                                                $peminjaman->status == 'Selesai' ? 'success' : ''
-                                                ))) }}">
-                                                {{ ucfirst($peminjaman->status) }}
+                                                    $peminjaman->status == 'Pending' ? 'pending' : (
+                                                    $peminjaman->status == 'Disetujui' ? 'disetujui' : (
+                                                    $peminjaman->status == 'Dipinjam' ? 'dipinjam' : (
+                                                    $peminjaman->status == 'Pengembalian' ? 'pengembalian' : (
+                                                    $peminjaman->status == 'Selesai' ? 'selesai' : (
+                                                    $peminjaman->status == 'Ditolak' ? 'ditolak' : (
+                                                    $peminjaman->status == 'Melewati Batas Waktu' ? 'melewati-batas-waktu' : ''
+                                                    )))))) }}">
+                                                    {{ ucfirst($peminjaman->status) }}
                                                 </span>
                                             </td>
                                         </tr>

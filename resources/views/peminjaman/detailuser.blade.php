@@ -44,14 +44,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                <form action="{{ route('approve.update', $peminjaman->id_peminjaman) }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="catatan">Catatan</label>
-                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $peminjaman->catatan }}</textarea>
-                </div>
-
-                @if (in_array($peminjaman->status, ['Pending', 'Disetujui', 'Ditolak']))
+                <form action="{{ route('peminjaman.userUpdate', ['id' => $peminjaman->id_peminjaman]) }}" method="POST">
+                    @csrf
+                    @if($peminjaman->status == 'Disetujui')
                     <div class="form-group">
                         <label for="status">Status</label>
                         <div>
@@ -64,30 +59,31 @@
                             <div class="form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="setuju" value="Disetujui" {{ $peminjaman->status == 'Disetujui' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="setuju">
-                                    Setuju
+                                    Terima
                                 </label>
                             </div>
                         </div>
                     </div>
-                @endif
-
-                <div class="text-right">
-                    <a href="{{ route('approve.index') }}" class="btn btn-primary mt-3">Kembali</a>
-                    @if ($peminjaman->status == 'Pengembalian')
-                        <button type="submit" name="action" value="terima_pengembalian" class="btn btn-success">Terima Pengembalian</button>
-                    @else
-                        <button type="submit" class="btn btn-success">Submit</button>
                     @endif
-                </div>
+                    @if($peminjaman->status == 'Dipinjam')
+                        <div class="text-right">
+                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <button type="submit" class="btn btn-warning" name="action" value="kembalikan">Kembalikan</button>
+                        </div>
+                    @elseif($peminjaman->status == 'Pengembalian')
+                        <div class="text-right">
+                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <button type="submit" class="btn btn-info" name="action" value="batalkan_pengembalian">Batalkan Pengembalian</button>
+                        </div>
+                    @else
+                        <div class="text-right">
+                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>
     </div>
 </div>
-<style>
-.form-check-inline {
-    display: inline-block;
-    margin-right: 10px;
-}
-</style>
 @endsection

@@ -7,7 +7,7 @@
         <div class="panel">
             <div class="panel-body">
                 <h1>Form Peminjaman Aset</h1>
-                <form id="peminjamanForm" action="/peminjaman" method="POST" enctype="multipart/form-data">
+                <form id="peminjamanForm" action="/peminjaman/create" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Jenis Peminjam</label>
@@ -120,42 +120,59 @@
 }
 </style>
 <script>
-document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
-    elem.addEventListener('change', function() {
-        var jenis = this.value;
-        document.getElementById('form_karyawan').style.display = (jenis == 'karyawan') ? 'block' : 'none';
-        document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default date to H+3
+    var dateInput = document.getElementById('tgl_peminjaman');
+    var today = new Date();
+    today.setDate(today.getDate() + 3);
+    var day = ('0' + today.getDate()).slice(-2);
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var year = today.getFullYear();
+    dateInput.value = year + '-' + month + '-' + day;
 
-        if (jenis == 'karyawan') {
-            document.getElementById('program').setAttribute('required', 'required');
-            document.getElementById('program_non_karyawan').removeAttribute('required');
-            document.getElementById('nama_peminjam').removeAttribute('required');
-            document.getElementById('nomor_hp_peminjam').removeAttribute('required');
-            fetch('/api/user-info')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('nama_karyawan').value = data.nama;
-                    document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
-                });
-        } else {
-            document.getElementById('program_non_karyawan').setAttribute('required', 'required');
-            document.getElementById('program').removeAttribute('required');
-            document.getElementById('nama_karyawan').removeAttribute('required');
-            document.getElementById('nomor_hp_karyawan').removeAttribute('required');
-            document.getElementById('nama_karyawan').value = '';
-            document.getElementById('nomor_hp_karyawan').value = '';
-        }
+    // Format date to dd/mm/yy
+    dateInput.addEventListener('input', function() {
+        var formattedDate = day + '/' + month + '/' + year;
+        this.value = formattedDate;
     });
-});
 
-document.getElementById('program').addEventListener('change', function() {
-    var selectedOption = this.options[this.selectedIndex];
-    document.getElementById('judul_kegiatan').value = selectedOption.getAttribute('data-judul');
-    document.getElementById('lokasi_kegiatan').value = selectedOption.getAttribute('data-lokasi');
-});
+    document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
+        elem.addEventListener('change', function() {
+            var jenis = this.value;
+            document.getElementById('form_karyawan').style.display = (jenis == 'karyawan') ? 'block' : 'none';
+            document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
 
-// Trigger change event on page load
-document.querySelector('input[name="jenis_peminjam"]:checked').dispatchEvent(new Event('change'));
+            if (jenis == 'karyawan') {
+                document.getElementById('program').setAttribute('required', 'required');
+                document.getElementById('program_non_karyawan').removeAttribute('required');
+                document.getElementById('nama_peminjam').removeAttribute('required');
+                document.getElementById('nomor_hp_peminjam').removeAttribute('required');
+                fetch('/api/user-info')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('nama_karyawan').value = data.nama;
+                        document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
+                    });
+            } else {
+                document.getElementById('program_non_karyawan').setAttribute('required', 'required');
+                document.getElementById('program').removeAttribute('required');
+                document.getElementById('nama_karyawan').removeAttribute('required');
+                document.getElementById('nomor_hp_karyawan').removeAttribute('required');
+                document.getElementById('nama_karyawan').value = '';
+                document.getElementById('nomor_hp_karyawan').value = '';
+            }
+        });
+    });
+
+    document.getElementById('program').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        document.getElementById('judul_kegiatan').value = selectedOption.getAttribute('data-judul');
+        document.getElementById('lokasi_kegiatan').value = selectedOption.getAttribute('data-lokasi');
+    });
+
+    // Trigger change event on page load
+    document.querySelector('input[name="jenis_peminjam"]:checked').dispatchEvent(new Event('change'));
+});
 </script>
 
-@endsection    
+@endsection

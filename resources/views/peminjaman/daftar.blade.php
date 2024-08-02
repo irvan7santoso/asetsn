@@ -21,7 +21,7 @@
                         </form>
                     </div>
                     <div class="col-md-3 text-right">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#cartModal">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#cartModal" id="cartButton" disabled>
                             Keranjang Peminjaman (<span id="cart-count">0</span>)
                         </button>
                     </div>
@@ -66,6 +66,9 @@
                 </div>
                 <div class="modal-body">
                     <form action="/peminjaman/create" method="GET" id="cartForm">
+                        <div id="empty-cart-message" class="alert alert-warning" style="display: none;">
+                            Keranjang kosong, harap pilih barang yang akan dipinjam!
+                        </div>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -79,10 +82,10 @@
                             </tbody>
                         </table>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-success">Isi Form Peminjaman</button>
+                            <button type="submit" class="btn btn-success" id="submitBorrowButton" disabled>Isi Form Peminjaman</button>
                         </div>
                     </form>
-                </div>
+                </div>                
             </div>
         </div>
     </div>
@@ -95,46 +98,60 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let cart = [];
+    let cart = [];
 
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const name = this.getAttribute('data-name');
-                const maxJumlah = parseInt(this.getAttribute('data-jumlah'));
-                addToCart(id, name, maxJumlah);
-            });
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const maxJumlah = parseInt(this.getAttribute('data-jumlah'));
+            addToCart(id, name, maxJumlah);
         });
+    });
 
-        function addToCart(id, name, maxJumlah) {
-            const index = cart.findIndex(item => item.id === id);
-            if (index === -1) {
-                cart.push({ id, name, quantity: 1, maxJumlah });
-            } else {
-                cart[index].quantity = Math.min(cart[index].quantity + 1, cart[index].maxJumlah);
-            }
-            renderCart();
-            showAlert(`Barang "${name}" telah ditambahkan ke keranjang.`);
+    function addToCart(id, name, maxJumlah) {
+        const index = cart.findIndex(item => item.id === id);
+        if (index === -1) {
+            cart.push({ id, name, quantity: 1, maxJumlah });
+        } else {
+            cart[index].quantity = Math.min(cart[index].quantity + 1, cart[index].maxJumlah);
         }
+        renderCart();
+        showAlert(`Barang "${name}" telah ditambahkan ke keranjang.`);
+    }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            renderCart();
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        renderCart();
+    }
+
+    function updateCartQuantity(id, quantity) {
+        const index = cart.findIndex(item => item.id === id);
+        if (index !== -1) {
+            cart[index].quantity = Math.min(Math.max(quantity, 1), cart[index].maxJumlah);
         }
+        renderCart();
+    }
 
-        function updateCartQuantity(id, quantity) {
-            const index = cart.findIndex(item => item.id === id);
-            if (index !== -1) {
-                cart[index].quantity = Math.min(Math.max(quantity, 1), cart[index].maxJumlah);
-            }
-            renderCart();
-        }
+    function renderCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartButton = document.getElementById('cartButton');
+        const submitBorrowButton = document.getElementById('submitBorrowButton');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
 
-        function renderCart() {
-            const cartItems = document.getElementById('cart-items');
-            const cartCount = document.getElementById('cart-count');
-            cartItems.innerHTML = '';
-            cartCount.textContent = cart.length;
+        cartItems.innerHTML = '';
+        cartCount.textContent = cart.length;
+
+        if (cart.length === 0) {
+            cartButton.disabled = true;
+            submitBorrowButton.disabled = true;
+            emptyCartMessage.style.display = 'block';
+        } else {
+            cartButton.disabled = false;
+            submitBorrowButton.disabled = false;
+            emptyCartMessage.style.display = 'none';
+
             cart.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -146,12 +163,14 @@
                 `;
                 cartItems.appendChild(row);
             });
+
             document.querySelectorAll('.remove-from-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
                     removeFromCart(id);
                 });
             });
+
             document.querySelectorAll('.cart-quantity').forEach(input => {
                 input.addEventListener('change', function() {
                     const id = this.getAttribute('data-id');
@@ -160,15 +179,17 @@
                 });
             });
         }
+    }
 
-        function showAlert(message) {
-            const alertContainer = document.getElementById('alert-container');
-            alertContainer.textContent = message;
-            alertContainer.style.display = 'block';
-            setTimeout(() => {
-                alertContainer.style.display = 'none';
-            }, 3000);
+    function showAlert(message) {
+        const alertContainer = document.getElementById('alert-container');
+        alertContainer.textContent = message;
+        alertContainer.style.display = 'block';
+        setTimeout(() => {
+            alertContainer.style.display = 'none';
+        }, 3000);
         }
     });
+
     </script>
 @endsection
