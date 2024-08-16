@@ -71,4 +71,5 @@ Route::get('/semuanotifikasi', function () {
     return view('akun.semuanotifikasi');
 });
 
+Route::get('export', [AsettlsnController::class, 'asetexport'])->name('Asettlsn.asetexport');
 

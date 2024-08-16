@@ -15,7 +15,9 @@
             </div>
           </form>
           <div class="row">
-            <div class="text-right"><a href="/Asettlsn/create" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Aset</a></div>
+            <div class="text-right">
+              <a href="{{ route('Asettlsn.asetexport') }}" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Export Excel</a>
+              <a href="/Asettlsn/create" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Aset</a></div>
           </div>
             <table class="table table-hover">
                 <thead>

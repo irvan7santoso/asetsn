@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Session;
 use App\Models\Asettlsn;
 use Illuminate\Http\Request;
+use App\Exports\AsettlsnExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AsettlsnController extends Controller
 {
@@ -132,5 +134,10 @@ class AsettlsnController extends Controller
     {
         Asettlsn::where('id',$id)->delete();
         return redirect()->to('Asettlsn')->with('success','Data Berhasil Dihapus!');
+    }
+
+    public function asetexport() 
+    {
+        return Excel::download(new AsettlsnExport, 'Daftar_Aset_Yayasan_Satunama.xlsx');
     }
 }
