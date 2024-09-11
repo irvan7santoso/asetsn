@@ -15,13 +15,13 @@ class dummyasetseeder extends Seeder
     {
         $asetdata = [
             [
-                'namabarang'=>'Mobil Pajero',
+                'namabarang'=>'Kursi Chitose Meja',
                 'tahun'=>'2012',
-                'jumlah'=>'12',
+                'jumlah'=>'67',
                 'nomorinventaris'=>'',
-                'nomorseri'=>'123123894',
+                'nomorseri'=>'',
                 'harga'=>'200000000',
-                'lokasi'=>'Garasi',
+                'lokasi'=>'Kelas Besar',
                 'pemakai'=>'',
                 'kondisi'=>'Baik'
             ],
@@ -48,34 +48,34 @@ class dummyasetseeder extends Seeder
                 'kondisi'=>'Sedang'
             ],
             [
-                'namabarang'=>'TV 100Inch',
+                'namabarang'=>'AC Daikin',
                 'tahun'=>'2024',
-                'jumlah'=>'2',
+                'jumlah'=>'4',
                 'nomorinventaris'=>'',
-                'nomorseri'=>'9878323',
+                'nomorseri'=>'',
                 'harga'=>'2500000',
                 'lokasi'=>'Kantor',
                 'pemakai'=>'',
                 'kondisi'=>'Rusak'
             ],
             [
-                'namabarang'=>'TV 10Inch',
+                'namabarang'=>'Proyektor LCD Maxell',
                 'tahun'=>'2021',
-                'jumlah'=>'12',
+                'jumlah'=>'5',
                 'nomorinventaris'=>'',
                 'nomorseri'=>'',
-                'harga'=>'25000',
+                'harga'=>'1500000',
                 'lokasi'=>'Kantor',
                 'pemakai'=>'',
                 'kondisi'=>'Baik'
             ],
             [
-                'namabarang'=>'Gerobak',
+                'namabarang'=>'Rak Besi',
                 'tahun'=>'2022',
                 'jumlah'=>'8',
-                'nomorinventaris'=>'21312',
-                'nomorseri'=>'412414',
-                'harga'=>'100000',
+                'nomorinventaris'=>'',
+                'nomorseri'=>'',
+                'harga'=>'1000000',
                 'lokasi'=>'',
                 'pemakai'=>'',
                 'kondisi'=>'Baik'
@@ -83,10 +83,10 @@ class dummyasetseeder extends Seeder
             [
                 'namabarang'=>'Kursi Lipat',
                 'tahun'=>'20024',
-                'jumlah'=>'99',
-                'nomorinventaris'=>'21312838',
-                'nomorseri'=>'412849128',
-                'harga'=>'2050000',
+                'jumlah'=>'12',
+                'nomorinventaris'=>'',
+                'nomorseri'=>'',
+                'harga'=>'125000',
                 'lokasi'=>'',
                 'pemakai'=>'',
                 'kondisi'=>'Baik'
@@ -94,19 +94,19 @@ class dummyasetseeder extends Seeder
             [
                 'namabarang'=>'Meja Makan',
                 'tahun'=>'2003',
-                'jumlah'=>'9',
-                'nomorinventaris'=>'1241298491',
-                'nomorseri'=>'14192839',
+                'jumlah'=>'6',
+                'nomorinventaris'=>'',
+                'nomorseri'=>'',
                 'harga'=>'3000000',
                 'lokasi'=>'',
                 'pemakai'=>'',
                 'kondisi'=>'Baik'
             ],
             [
-                'namabarang'=>'Mobil Kodok',
-                'tahun'=>'2007',
-                'jumlah'=>'9',
-                'nomorinventaris'=>'4124123',
+                'namabarang'=>'Mobil Daihatsu Grandmax AB 1234 CD',
+                'tahun'=>'2020',
+                'jumlah'=>'1',
+                'nomorinventaris'=>'',
                 'nomorseri'=>'',
                 'harga'=>'12000000',
                 'lokasi'=>'Garasi',
@@ -114,9 +114,9 @@ class dummyasetseeder extends Seeder
                 'kondisi'=>'Baik'
             ],
             [
-                'namabarang'=>'Mobil Amfibi',
+                'namabarang'=>'Mobil Phanter AB 4321 DC',
                 'tahun'=>'2012',
-                'jumlah'=>'20',
+                'jumlah'=>'1',
                 'nomorinventaris'=>'',
                 'nomorseri'=>'',
                 'harga'=>'12000000',
@@ -125,11 +125,11 @@ class dummyasetseeder extends Seeder
                 'kondisi'=>'Baik'
             ],
             [
-                'namabarang'=>'Iphone 20 Pro Maximal Minimal',
-                'tahun'=>'2023',
-                'jumlah'=>'5',
+                'namabarang'=>'Iphone 20 Pro Max',
+                'tahun'=>'2024',
+                'jumlah'=>'6',
                 'nomorinventaris'=>'',
-                'nomorseri'=>'987436358',
+                'nomorseri'=>'',
                 'harga'=>'1250000',
                 'lokasi'=>'Aula',
                 'pemakai'=>'',

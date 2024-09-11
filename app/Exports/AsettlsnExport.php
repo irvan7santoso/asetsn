@@ -108,6 +108,12 @@ class AsettlsnExport implements FromCollection, WithHeadings, WithMapping, WithE
                 $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(25); // Kolom Pemakai
                 $event->sheet->getDelegate()->getColumnDimension('J')->setWidth(15); // Kolom Kondisi
 
+            // Menambahkan tanggal di bawah logo (misalnya di A4)
+            $tanggalExport = now()->format('d-m-Y'); // Format tanggal dd-mm-yyyy
+            $event->sheet->setCellValue('A4', 'Tanggal Export: ' . $tanggalExport); // Menampilkan tanggal export
+            $event->sheet->getStyle('A4')->getFont()->setItalic(true); // Menjadikan teks miring
+            $event->sheet->getStyle('A4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
             // Menambahkan border untuk header kolom (baris 5)
             $event->sheet->getStyle('A5:J5')
                 ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK)
