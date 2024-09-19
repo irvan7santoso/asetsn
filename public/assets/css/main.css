@@ -723,10 +723,11 @@ fieldset[disabled] .btn {
     text-align: right; }
   .metric .number {
     display: block;
-    font-size: 28px;
-    font-weight: 300; }
+    font-size: 30px;
+    font-weight: 500; }
   .metric .title {
-    font-size: 16px; }
+    font-size: 16px;
+    font-weight: 600; }
 
 ul.activity-list > li {
   padding: 25px 0; }

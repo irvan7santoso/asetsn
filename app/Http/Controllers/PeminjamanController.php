@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Program;
 use App\Models\Asettlsn;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Models\ItemPeminjaman;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\PeminjamanBaruNotification;
 
 class PeminjamanController extends Controller
 {
@@ -16,11 +18,14 @@ class PeminjamanController extends Controller
     {
         $katakunci = $request->katakunci;
         if (strlen($katakunci)) {
-            $assets = Asettlsn::where('namabarang', 'like',"%$katakunci%")->where('jumlah','>',0)->get();
+            $assets = Asettlsn::where('namabarang', 'like',"%$katakunci%")->where('jumlah_tersedia','>',0)->get();
         } else{
-            $assets = Asettlsn::where('kondisi','Baik')->where('jumlah','>',0)->get();
+            $assets = Asettlsn::where('kondisi','Baik')->where('jumlah_tersedia','>',0)->get();
         }
-        return view('peminjaman.daftar', compact('assets'));
+
+        $cart = session('cart', []); // Ambil keranjang dari session
+
+        return view('peminjaman.daftar', compact('assets', 'cart'));
     }
 
     public function create(Request $request)
@@ -109,6 +114,13 @@ class PeminjamanController extends Controller
             $itemPeminjaman->id_peminjaman = $peminjaman->id_peminjaman;
             $itemPeminjaman->jumlah_dipinjam = $barang['jumlah_dipinjam'];
             $itemPeminjaman->save();
+        }
+
+        // Mengirim notifikasi ke admin
+        $admins = User::where('role', 'admin')->get(); // Mengambil semua user yang merupakan admin
+
+        foreach ($admins as $admin) {
+            $admin->notify(new PeminjamanBaruNotification($peminjaman));
         }
 
         return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui');

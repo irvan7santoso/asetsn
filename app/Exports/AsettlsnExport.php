@@ -52,6 +52,20 @@ class AsettlsnExport implements FromCollection, WithHeadings, WithMapping, WithE
      */
     public function map($asettlsn): array
     {
+        // Ambil semua peminjaman terkait dengan aset ini yang berstatus dipinjam
+        $peminjamans = $asettlsn->peminjamans()->withPivot('jumlah_dipinjam')->get();
+
+        // Array untuk menyimpan nama peminjam dan jumlah aset yang dipinjam
+        $pemakaiList = [];
+
+        // Loop melalui setiap peminjaman yang terkait dengan aset ini
+        foreach ($peminjamans as $peminjaman) {
+            $pemakaiList[] = $peminjaman->nama_peminjam . ' (' . $peminjaman->pivot->jumlah_dipinjam . ')';
+        }
+
+        // Gabungkan semua nama peminjam dan jumlahnya menjadi satu string
+        $pemakaiString = implode(', ', $pemakaiList);
+
         return [
             $this->rowNumber++,    // Menampilkan nomor urut dan increment
             $asettlsn->namabarang,
@@ -61,7 +75,7 @@ class AsettlsnExport implements FromCollection, WithHeadings, WithMapping, WithE
             (string)$asettlsn->nomorseri,
             (float)$asettlsn->harga,
             $asettlsn->lokasi,
-            $asettlsn->pemakai,
+            $pemakaiString,        // Menampilkan informasi pemakai di kolom ini
             $asettlsn->kondisi,
         ];
     }

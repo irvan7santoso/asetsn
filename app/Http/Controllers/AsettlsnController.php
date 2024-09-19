@@ -27,7 +27,6 @@ class AsettlsnController extends Controller
                 ->orWhere('nomorseri', 'like', "%$katakunci%")
                 ->orWhere('harga', 'like', "%$katakunci%")
                 ->orWhere('lokasi', 'like', "%$katakunci%")
-                ->orWhere('pemakai', 'like', "%$katakunci%")
                 ->orWhere('kondisi', 'like', "%$katakunci%");
         }
 
@@ -68,7 +67,6 @@ class AsettlsnController extends Controller
         Session::flash('nomorseri',$request->nomorseri);
         Session::flash('harga',$request->harga);
         Session::flash('lokasi',$request->lokasi);
-        Session::flash('pemakai',$request->pemakai);
         Session::flash('kondisi',$request->kondisi);
 
         $request->validate([
@@ -84,7 +82,6 @@ class AsettlsnController extends Controller
             'nomorseri' => $request->nomorseri,
             'harga' => $request->harga,
             'lokasi' => $request->lokasi,
-            'pemakai' => $request->pemakai,
             'kondisi' => $request->kondisi,
         ];
         Asettlsn::create($data);
@@ -120,7 +117,6 @@ class AsettlsnController extends Controller
             'nomorseri' => $request->nomorseri,
             'harga' => $request->harga,
             'lokasi' => $request->lokasi,
-            'pemakai' => $request->pemakai,
             'kondisi' => $request->kondisi,
         ];
         Asettlsn::where('id',$id)->update($data);

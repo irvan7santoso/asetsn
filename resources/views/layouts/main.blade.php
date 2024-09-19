@@ -6,6 +6,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- VENDOR CSS -->
 	<link rel="stylesheet" href="{{ asset ('assets/vendor/bootstrap/css/bootstrap.css') }}">
 	<link rel="stylesheet" href="{{ asset ('assets/vendor/font-awesome/css/font-awesome.min.css') }}">
@@ -39,14 +40,17 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
 								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-success">5</span>
+								<span class="badge bg-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
 							</a>
 							<ul class="dropdown-menu notifications">
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Aset Mobil harus dikembalikan pada tanggal 12 Desember 2023</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>Masa peminjaman aset melampaui batas!</a></li>
-								<li><a href="/" class="notification-item"><span class="dot bg-success"></span>Peminjaman aset disetujui</a></li>
-								<li><a href="/approvepeminjaman" class="notification-item"><span class="dot bg-info"></span>Permohonan peminjaman aset/alat baru</a></li>
-								<li><a href="/" class="notification-item"><span class="dot bg-primary"></span>Aset sudah dikembalikan</a></li>
+								<li>
+									<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+										<strong>Notifikasi</strong>
+									</div>
+								</li>
+								@foreach (auth()->user()->unreadNotifications as $notification)
+								<li><a href="/notifications/read/{{ $notification->id }}" class="notification-item"><span class="dot bg-info"></span>{{ $notification->data['nama_peminjam'] }} melakukan peminjaman untuk "{{ $notification->data['program'] }}"</a></li>
+								@endforeach
 								<li><a href="/semuanotifikasi" class="more">Lihat semua notifikasi</a></li>
 							</ul>
 						</li>
@@ -80,7 +84,7 @@
 							<a href="/approve" class=""><i class="lnr lnr-book"></i> <span>Daftar Permohonan Peminjaman Aset</span></a>
 						</li>
 						<li class="{{ Request::is('peminjamansaya') ? 'active' : '' }}">
-							<a href="/peminjamansaya" class=""><i class="lnr lnr-book"></i> <span>Daftar Peminjaman Saya</span></a>
+							<a href="/peminjamansaya" class=""><i class="lnr lnr-user"></i> <span>Daftar Peminjaman Saya</span></a>
 						</li>
 					</ul>
 				</nav>

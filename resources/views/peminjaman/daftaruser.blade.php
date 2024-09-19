@@ -14,7 +14,7 @@
                 <a href="{{ route('peminjaman.user', ['status' => 'Dipinjam']) }}" class="btn btn-default {{ request('status') == 'Dipinjam' ? 'active' : '' }}">Dipinjam</a>
                 <a href="{{ route('peminjaman.user', ['status' => 'Pengembalian']) }}" class="btn btn-default {{ request('status') == 'Pengembalian' ? 'active' : '' }}">Pengembalian</a>
                 <a href="{{ route('peminjaman.user', ['status' => 'Selesai']) }}" class="btn btn-default {{ request('status') == 'Selesai' ? 'active' : '' }}">Selesai</a>
-                <a href="{{ route('peminjaman.user', ['status' => 'Melewati Batas Waktu']) }}" class="btn btn-default {{ request('status') == 'Melewati Batas Waktu' ? 'active' : '' }}">Melewati Batas Waktu</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Melebihi batas waktu']) }}" class="btn btn-default {{ request('status') == 'Melebihi batas waktu' ? 'active' : '' }}">Melebihi batas waktu</a>
             </div>
 
             <table class="table table-hover mt-3">
@@ -43,7 +43,7 @@
                                 $pinjam->status == 'Pengembalian' ? 'pengembalian' : (
                                 $pinjam->status == 'Selesai' ? 'selesai' : (
                                 $pinjam->status == 'Ditolak' ? 'ditolak' : (
-                                $pinjam->status == 'Melewati Batas Waktu' ? 'melewati-batas-waktu' : ''
+                                $pinjam->status == 'Melebihi batas waktu' ? 'melebihibataswaktu' : ''
                                 )))))) }}">
                                 {{ ucfirst($pinjam->status) }}
                             </span>
@@ -101,9 +101,13 @@
     color: #fff; /* Warna teks */
 }
 
-.label-ditolak,
-.label-melewati-batas-waktu {
+.label-ditolak {
     background-color: #dc3545; /* Warna merah */
+    color: #fff; /* Warna teks */
+}
+
+.label-melebihibataswaktu {
+    background-color: #000000; /* Warna merah */
     color: #fff; /* Warna teks */
 }
 </style>

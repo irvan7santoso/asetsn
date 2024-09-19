@@ -4,141 +4,43 @@ namespace Database\Seeders;
 
 use App\Models\Asettlsn;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class dummyasetseeder extends Seeder
+class DummyAsetSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $asetdata = [
-            [
-                'namabarang'=>'Kursi Chitose Meja',
-                'tahun'=>'2012',
-                'jumlah'=>'67',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'200000000',
-                'lokasi'=>'Kelas Besar',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Mobil Xenia',
-                'tahun'=>'2009',
-                'jumlah'=>'22',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'1343321',
-                'harga'=>'110000000',
-                'lokasi'=>'Garasi',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Meja Coklat',
-                'tahun'=>'2022',
-                'jumlah'=>'35',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'41284778232',
-                'harga'=>'1000000',
-                'lokasi'=>'Gudang',
-                'pemakai'=>'',
-                'kondisi'=>'Sedang'
-            ],
-            [
-                'namabarang'=>'AC Daikin',
-                'tahun'=>'2024',
-                'jumlah'=>'4',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'2500000',
-                'lokasi'=>'Kantor',
-                'pemakai'=>'',
-                'kondisi'=>'Rusak'
-            ],
-            [
-                'namabarang'=>'Proyektor LCD Maxell',
-                'tahun'=>'2021',
-                'jumlah'=>'5',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'1500000',
-                'lokasi'=>'Kantor',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Rak Besi',
-                'tahun'=>'2022',
-                'jumlah'=>'8',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'1000000',
-                'lokasi'=>'',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Kursi Lipat',
-                'tahun'=>'20024',
-                'jumlah'=>'12',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'125000',
-                'lokasi'=>'',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Meja Makan',
-                'tahun'=>'2003',
-                'jumlah'=>'6',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'3000000',
-                'lokasi'=>'',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Mobil Daihatsu Grandmax AB 1234 CD',
-                'tahun'=>'2020',
-                'jumlah'=>'1',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'12000000',
-                'lokasi'=>'Garasi',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Mobil Phanter AB 4321 DC',
-                'tahun'=>'2012',
-                'jumlah'=>'1',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'12000000',
-                'lokasi'=>'Garasi',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ],
-            [
-                'namabarang'=>'Iphone 20 Pro Max',
-                'tahun'=>'2024',
-                'jumlah'=>'6',
-                'nomorinventaris'=>'',
-                'nomorseri'=>'',
-                'harga'=>'1250000',
-                'lokasi'=>'Aula',
-                'pemakai'=>'',
-                'kondisi'=>'Baik'
-            ]
-            
+        $asetdata = [];
+
+        // Example data for locations, conditions, and pemakai
+        $locations = ['Garasi', 'Kantor', 'Gudang', 'Kelas Besar', 'Aula'];
+        $conditions = ['Baik', 'Sedang', 'Rusak'];
+        $items = [
+            'Mobil', 'Motor', 'Kursi', 'Meja','AC', 'Proyektor', 'Mouse', 'Laptop',
+            'HP', 'Printer', 'Rol Kabel', 'Kipas angin', 'Kulkas', 'Lemari', 'Kasur', 'Komputer', 'Dispenser',
+            'Mouse', 'Scanner', 'Voice Recorder', 'Papan Tulis', 'CCTV', 'Gedung'
         ];
 
-        foreach($asetdata as $key => $val){
+        // Loop to generate 50 dummy data
+        for ($i = 1; $i <= 50; $i++) {
+            $asetdata[] = [
+                'namabarang' => $items[array_rand($items)] . ' ' . rand(1000, 9999) . ' ' . chr(rand(65, 90)) . chr(rand(65, 90)), // Random license or asset code
+                'tahun' => rand(1995, 2024),
+                'jumlah' => rand(1, 10), // Random quantity
+                'jumlah_tersedia' => rand(0, 10), // Random available quantity
+                'nomorinventaris' => null,
+                'nomorseri' => null,
+                'harga' => rand(1000000, 50000000), // Random price
+                'lokasi' => $locations[array_rand($locations)],
+                'pemakai' => '', // Blank pemakai
+                'kondisi' => $conditions[array_rand($conditions)], // Random condition
+            ];
+        }
+
+        // Insert the generated data into the database
+        foreach ($asetdata as $val) {
             Asettlsn::create($val);
         }
     }

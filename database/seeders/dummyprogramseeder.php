@@ -20,6 +20,16 @@ class dummyprogramseeder extends Seeder
                 'lokasi_kegiatan'=>'Lapangan Senam'
              ],
              [
+                'nama_program'=>'Belajar Membaca',
+                'judul_kegiatan'=>'Belajar Membaca Anak',
+                'lokasi_kegiatan'=>'Balai Desa'
+             ],
+             [
+                'nama_program'=>'Bakti Sosial',
+                'judul_kegiatan'=>'Droping Air Bersih',
+                'lokasi_kegiatan'=>'Padang Pasir'
+             ],
+             [
                 'nama_program'=>'Lari Lari',
                 'judul_kegiatan'=>'Lari Pagi',
                 'lokasi_kegiatan'=>'Alun Alun'

@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $recentPeminjaman = Peminjaman::orderBy('created_at', 'desc')->take(5)->get();
         
         // Mengambil data jumlah aset dipinjam
-        $asetdipinjam = Peminjaman::where('status', 'Disetujui')->count();
+        $asetdipinjam = Peminjaman::where('status', 'Dipinjam')->count();
 
         // Mengambil data jumlah aset belum dikembalikan
         $asetbelumdikembalikan = Peminjaman::where('status', 'Melebihi batas waktu')->count();

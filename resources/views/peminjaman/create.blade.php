@@ -123,18 +123,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Set default date to H+3
     var dateInput = document.getElementById('tgl_peminjaman');
+    var returnDateInput = document.getElementById('tgl_kembali');
     var today = new Date();
     today.setDate(today.getDate() + 3);
     var day = ('0' + today.getDate()).slice(-2);
     var month = ('0' + (today.getMonth() + 1)).slice(-2);
     var year = today.getFullYear();
     dateInput.value = year + '-' + month + '-' + day;
-
-    // Format date to dd/mm/yy
-    dateInput.addEventListener('input', function() {
-        var formattedDate = day + '/' + month + '/' + year;
-        this.value = formattedDate;
-    });
+    returnDateInput.value = year + '-' + month + '-' + day;
 
     document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
         elem.addEventListener('change', function() {

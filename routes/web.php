@@ -8,6 +8,7 @@ use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\AsettlsnController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,5 +72,11 @@ Route::get('/semuanotifikasi', function () {
     return view('akun.semuanotifikasi');
 });
 
+Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
 Route::get('export', [AsettlsnController::class, 'asetexport'])->name('Asettlsn.asetexport');
 
+Route::post('/update-cart-session', function (Illuminate\Http\Request $request) {
+    session(['cart' => $request->cart]);
+    return response()->json(['success' => true]);
+});
