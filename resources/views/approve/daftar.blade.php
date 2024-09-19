@@ -17,6 +17,8 @@
                 <a href="{{ route('approve.index', ['status' => 'Melebihi batas waktu']) }}" class="btn btn-default {{ request('status') == 'Melebihi batas waktu' ? 'active' : '' }}">Melebihi batas waktu</a>
             </div>
 
+            <a href="{{ route('export.peminjaman') }}" class="btn btn-success mb-3">Export Daftar Peminjaman</a>
+
             <table class="table table-hover mt-3">
                 <thead>
                     <tr>

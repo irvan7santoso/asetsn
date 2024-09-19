@@ -4,6 +4,7 @@ use App\Http\Middleware\UserAkses;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SesiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\AsettlsnController;
 use App\Http\Controllers\DashboardController;
@@ -75,6 +76,7 @@ Route::get('/semuanotifikasi', function () {
 Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 
 Route::get('export', [AsettlsnController::class, 'asetexport'])->name('Asettlsn.asetexport');
+Route::get('/export-peminjaman', [ExportController::class, 'exportPeminjaman'])->name('export.peminjaman');
 
 Route::post('/update-cart-session', function (Illuminate\Http\Request $request) {
     session(['cart' => $request->cart]);

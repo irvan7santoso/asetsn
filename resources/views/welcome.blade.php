@@ -149,7 +149,7 @@ use App\Models\asettlsn;
                                 </thead>
                                 <tbody>
                                     @foreach ($recentPeminjaman as $peminjaman)
-                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('peminjaman.userShow', $peminjaman->id_peminjaman) }}'">
+                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('approve.show', $peminjaman->id_peminjaman) }}'">
                                             <td>{{ $peminjaman->nama_peminjam }}</td>
                                             <td>
                                                 @foreach ($peminjaman->asettlsns as $aset)

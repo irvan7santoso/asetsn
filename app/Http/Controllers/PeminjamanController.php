@@ -123,6 +123,8 @@ class PeminjamanController extends Controller
             $admin->notify(new PeminjamanBaruNotification($peminjaman));
         }
 
+        session()->forget('cart');
+
         return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui');
     }
 
