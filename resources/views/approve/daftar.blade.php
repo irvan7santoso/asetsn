@@ -15,9 +15,10 @@
                 <a href="{{ route('approve.index', ['status' => 'Pengembalian']) }}" class="btn btn-default {{ request('status') == 'Pengembalian' ? 'active' : '' }}">Pengembalian</a>
                 <a href="{{ route('approve.index', ['status' => 'Selesai']) }}" class="btn btn-default {{ request('status') == 'Selesai' ? 'active' : '' }}">Selesai</a>
                 <a href="{{ route('approve.index', ['status' => 'Melebihi batas waktu']) }}" class="btn btn-default {{ request('status') == 'Melebihi batas waktu' ? 'active' : '' }}">Melebihi batas waktu</a>
+                <a href="{{ route('approve.index', ['status' => 'Expired']) }}" class="btn btn-default {{ request('status') == 'Expired' ? 'active' : '' }}">Expired</a>
             </div>
 
-            <a href="{{ route('export.peminjaman') }}" class="btn btn-success mb-3">Export Daftar Peminjaman</a>
+            <a href="{{ route('export.peminjaman') }}" class="btn btn-success mb-3"><i class="fa fa-file-excel-o"></i> Export Daftar Peminjaman</a>
 
             <table class="table table-hover mt-3">
                 <thead>
@@ -45,8 +46,9 @@
                                 $pinjam->status == 'Pengembalian' ? 'pengembalian' : (
                                 $pinjam->status == 'Selesai' ? 'selesai' : (
                                 $pinjam->status == 'Ditolak' ? 'ditolak' : (
+                                $pinjam->status == 'Expired' ? 'expired' : (
                                 $pinjam->status == 'Melebihi batas waktu' ? 'melebihibataswaktu' : ''
-                                )))))) }}">
+                                ))))))) }}">
                                 {{ ucfirst($pinjam->status) }}
                             </span>
                         </td>

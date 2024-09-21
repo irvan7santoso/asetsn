@@ -15,6 +15,7 @@
                 <a href="{{ route('peminjaman.user', ['status' => 'Pengembalian']) }}" class="btn btn-default {{ request('status') == 'Pengembalian' ? 'active' : '' }}">Pengembalian</a>
                 <a href="{{ route('peminjaman.user', ['status' => 'Selesai']) }}" class="btn btn-default {{ request('status') == 'Selesai' ? 'active' : '' }}">Selesai</a>
                 <a href="{{ route('peminjaman.user', ['status' => 'Melebihi batas waktu']) }}" class="btn btn-default {{ request('status') == 'Melebihi batas waktu' ? 'active' : '' }}">Melebihi batas waktu</a>
+                <a href="{{ route('peminjaman.user', ['status' => 'Expired']) }}" class="btn btn-default {{ request('status') == 'Expired' ? 'active' : '' }}">Expired</a>
             </div>
 
             <table class="table table-hover mt-3">
@@ -43,8 +44,9 @@
                                 $pinjam->status == 'Pengembalian' ? 'pengembalian' : (
                                 $pinjam->status == 'Selesai' ? 'selesai' : (
                                 $pinjam->status == 'Ditolak' ? 'ditolak' : (
+                                $pinjam->status == 'Expired' ? 'expired' : (
                                 $pinjam->status == 'Melebihi batas waktu' ? 'melebihibataswaktu' : ''
-                                )))))) }}">
+                                ))))))) }}">
                                 {{ ucfirst($pinjam->status) }}
                             </span>
                         </td>
