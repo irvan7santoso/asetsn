@@ -8,6 +8,7 @@
                 <h2>Detail Permohonan Peminjaman</h2>
                 <p><strong>Nama Peminjam:</strong> {{ $peminjaman->nama_peminjam }}</p>
                 <p><strong>Nomor HP Peminjam:</strong> {{ $peminjaman->nomor_hp_peminjam }}</p>
+                <p><strong>Email Peminjam:</strong> {{ $peminjaman->email_peminjam }}</p>
 
                 @if(empty($peminjaman->judul_kegiatan) && empty($peminjaman->lokasi_kegiatan))
                     <p><strong>Alasan Peminjaman:</strong> {{ $peminjaman->program }}</p>
@@ -67,17 +68,17 @@
                     @endif
                     @if($peminjaman->status == 'Dipinjam')
                         <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
                             <button type="submit" class="btn btn-warning" name="action" value="kembalikan">Kembalikan</button>
                         </div>
                     @elseif($peminjaman->status == 'Pengembalian')
                         <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
                             <button type="submit" class="btn btn-info" name="action" value="batalkan_pengembalian">Batalkan Pengembalian</button>
                         </div>
                     @else
                         <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Pending']) }}" class="btn btn-danger">Batal</a>
+                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     @endif

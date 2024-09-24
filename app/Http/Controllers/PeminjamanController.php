@@ -18,8 +18,8 @@ class PeminjamanController extends Controller
     {
         $katakunci = $request->katakunci;
         if (strlen($katakunci)) {
-            $assets = Asettlsn::where('namabarang', 'like',"%$katakunci%")->where('jumlah_tersedia','>',0)->get();
-        } else{
+            $assets = Asettlsn::where('namabarang', 'ILIKE',"%$katakunci%")->where('jumlah_tersedia','>',0)->get();
+        } else {
             $assets = Asettlsn::where('kondisi','Baik')->where('jumlah_tersedia','>',0)->get();
         }
 
@@ -85,20 +85,23 @@ class PeminjamanController extends Controller
         if ($request->jenis_peminjam == 'karyawan') {
             $nama_peminjam = $request->nama_karyawan;
             $nomor_hp_peminjam = $request->nomor_hp_karyawan;
+            $email_peminjam = Auth::user()->email;  // Ambil email dari tabel users
             $program = $validatedData['program'] ?? '';
             $judul_kegiatan = $request->judul_kegiatan ?? '';
             $lokasi_kegiatan = $request->lokasi_kegiatan ?? '';
         } else {
             $nama_peminjam = $request->nama_peminjam;
             $nomor_hp_peminjam = $request->nomor_hp_peminjam;
+            $email_peminjam = $request->email_peminjam;  // Email manual dari non-karyawan
             $program = $validatedData['program_non_karyawan'] ?? '';
             $judul_kegiatan = $validatedData['judul_kegiatan_non_karyawan'] ?? '';
             $lokasi_kegiatan = $validatedData['lokasi_kegiatan_non_karyawan'] ?? '';
-        }
+        }        
 
         $peminjaman = new Peminjaman();
         $peminjaman->nama_peminjam = $nama_peminjam;
         $peminjaman->nomor_hp_peminjam = $nomor_hp_peminjam;
+        $peminjaman->email_peminjam = $email_peminjam;
         $peminjaman->program = $program;
         $peminjaman->judul_kegiatan = $judul_kegiatan;
         $peminjaman->lokasi_kegiatan = $lokasi_kegiatan;

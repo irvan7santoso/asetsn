@@ -34,6 +34,10 @@
                                 <input type="text" class="form-control" id="nomor_hp_karyawan" name="nomor_hp_karyawan" readonly>
                             </div>
                             <div class="form-group">
+                                <label for="email_karyawan">Email</label>
+                                <input type="email" class="form-control" id="email_karyawan" name="email_karyawan" readonly>
+                            </div>
+                            <div class="form-group">
                                 <label for="program">Program</label>
                                 <select class="form-control" id="program" name="program" required>
                                     <option value="">Pilih Program</option>
@@ -62,6 +66,10 @@
                             <div class="form-group">
                                 <label for="nomor_hp_peminjam">Nomor HP</label>
                                 <input type="text" class="form-control" id="nomor_hp_peminjam" name="nomor_hp_peminjam" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email_peminjam">Email</label>
+                                <input type="email" class="form-control" id="email_peminjam" name="email_peminjam" required>
                             </div>
                             <div class="form-group">
                                 <label for="program_non_karyawan">Alasan Peminjaman</label>
@@ -135,27 +143,45 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[name="jenis_peminjam"]').forEach((elem) => {
         elem.addEventListener('change', function() {
             var jenis = this.value;
-            document.getElementById('form_karyawan').style.display = (jenis == 'karyawan') ? 'block' : 'none';
-            document.getElementById('form_non_karyawan').style.display = (jenis == 'non_karyawan') ? 'block' : 'none';
+            var formKaryawan = document.getElementById('form_karyawan');
+            var formNonKaryawan = document.getElementById('form_non_karyawan');
+            var namaPeminjam = document.getElementById('nama_peminjam');
+            var nomorHpPeminjam = document.getElementById('nomor_hp_peminjam');
+            var emailPeminjam = document.getElementById('email_peminjam');
+            var program = document.getElementById('program');
+            var programNonKaryawan = document.getElementById('program_non_karyawan');
 
-            if (jenis == 'karyawan') {
-                document.getElementById('program').setAttribute('required', 'required');
-                document.getElementById('program_non_karyawan').removeAttribute('required');
-                document.getElementById('nama_peminjam').removeAttribute('required');
-                document.getElementById('nomor_hp_peminjam').removeAttribute('required');
+            if (jenis === 'karyawan') {
+                formKaryawan.style.display = 'block';
+                formNonKaryawan.style.display = 'none';
+                
+                program.setAttribute('required', 'required');
+                programNonKaryawan.removeAttribute('required');
+                namaPeminjam.removeAttribute('required');
+                nomorHpPeminjam.removeAttribute('required');
+                emailPeminjam.removeAttribute('required');
+
                 fetch('/api/user-info')
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('nama_karyawan').value = data.nama;
                         document.getElementById('nomor_hp_karyawan').value = data.nomor_hp;
+                        document.getElementById('email_karyawan').value = data.email;  // Isi email karyawan
                     });
             } else {
-                document.getElementById('program_non_karyawan').setAttribute('required', 'required');
-                document.getElementById('program').removeAttribute('required');
-                document.getElementById('nama_karyawan').removeAttribute('required');
-                document.getElementById('nomor_hp_karyawan').removeAttribute('required');
+                formKaryawan.style.display = 'none';
+                formNonKaryawan.style.display = 'block';
+
+                namaPeminjam.setAttribute('required', 'required');
+                nomorHpPeminjam.setAttribute('required', 'required');
+                emailPeminjam.setAttribute('required', 'required');
+                program.removeAttribute('required');
+                programNonKaryawan.setAttribute('required', 'required');
+
+                // Clear the Karyawan fields when switching to Non Karyawan
                 document.getElementById('nama_karyawan').value = '';
                 document.getElementById('nomor_hp_karyawan').value = '';
+                document.getElementById('email_karyawan').value = '';
             }
         });
     });

@@ -18,7 +18,7 @@
                 <a href="{{ route('approve.index', ['status' => 'Expired']) }}" class="btn btn-default {{ request('status') == 'Expired' ? 'active' : '' }}">Expired</a>
             </div>
 
-            <a href="{{ route('export.peminjaman') }}" class="btn btn-success mb-3"><i class="fa fa-file-excel-o"></i> Export Daftar Peminjaman</a>
+            <a href="{{ route('export.peminjaman') }}" class="btn btn-success mb-3 pull-right"><i class="fa fa-file-excel-o"></i> Export Daftar Peminjaman</a>
 
             <table class="table table-hover mt-3">
                 <thead>

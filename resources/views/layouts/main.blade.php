@@ -49,7 +49,13 @@
 									</div>
 								</li>
 								@foreach (auth()->user()->unreadNotifications as $notification)
-								<li><a href="/notifications/read/{{ $notification->id }}" class="notification-item"><span class="dot bg-info"></span>{{ $notification->data['nama_peminjam'] }} melakukan peminjaman untuk "{{ $notification->data['program'] }}"</a></li>
+									<li>
+										<a href="{{ isset($notification->data['url']) ? route('notifications.read', $notification->id) : '#' }}" class="notification-item">
+											<span class="dot bg-info"></span>
+											{{ $notification->data['message'] }} <!-- Menampilkan pesan dari notifikasi -->
+											<small>{{ $notification->created_at->diffForHumans() }}</small>
+										</a>
+									</li>
 								@endforeach
 								<li><a href="/semuanotifikasi" class="more">Lihat semua notifikasi</a></li>
 							</ul>
@@ -112,7 +118,7 @@
 		<!-- NAVBAR -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="brand">
-				<a href="/welcome"><img src="{{ asset ('assets/img/logo2.png') }}" alt="Satunama Logo" class="img-responsive logo"></a>
+				<a href="/dashboard"><img src="{{ asset ('assets/img/logo2.png') }}" alt="Satunama Logo" class="img-responsive logo"></a>
 			</div>
 			<div class="container-fluid">
 				<div class="navbar-btn">
@@ -123,14 +129,23 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
 								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-success">5</span>
+								<span class="badge bg-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
 							</a>
 							<ul class="dropdown-menu notifications">
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Aset Mobil harus dikembalikan pada tanggal 12 Desember 2023</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>Masa peminjaman aset melampaui batas!</a></li>
-								<li><a href="/" class="notification-item"><span class="dot bg-success"></span>Peminjaman aset disetujui</a></li>
-								<li><a href="/approvepeminjaman" class="notification-item"><span class="dot bg-info"></span>Permohonan peminjaman aset/alat baru</a></li>
-								<li><a href="/" class="notification-item"><span class="dot bg-primary"></span>Aset sudah dikembalikan</a></li>
+								<li>
+									<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+										<strong>Notifikasi</strong>
+									</div>
+								</li>
+								@foreach (auth()->user()->unreadNotifications as $notification)
+									<li>
+										<a href="{{ isset($notification->data['url']) ? route('notifications.read', $notification->id) : '#' }}" class="notification-item">
+											<span class="dot bg-info"></span>
+											{{ $notification->data['message'] }} <!-- Menampilkan pesan dari notifikasi -->
+											<small>{{ $notification->created_at->diffForHumans() }}</small>
+										</a>
+									</li>
+								@endforeach
 								<li><a href="/semuanotifikasi" class="more">Lihat semua notifikasi</a></li>
 							</ul>
 						</li>
@@ -151,8 +166,8 @@
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
-						<li class="{{ Request::is('welcome') ? 'active' : '' }}">
-							<a href="/welcome" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
+						<li class="{{ Request::is('dashboard') ? 'active' : '' }}">
+							<a href="/dashboard" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a>
 						</li>
 						<li class="{{ Request::is('peminjaman') ? 'active' : '' }}">
 							<a href="/peminjaman" class=""><i class="lnr lnr-laptop-phone"></i> <span>Peminjaman Aset</span></a>

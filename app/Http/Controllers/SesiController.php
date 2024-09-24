@@ -34,9 +34,9 @@ class SesiController extends Controller
         // Cek peran pengguna dan arahkan sesuai
         $user = Auth::user();
         if ($user->role == 'user') {
-            return redirect('/user/user');
+            return redirect('/dashboard');
         } elseif ($user->role == 'admin') {
-            return redirect('/user/admin');
+            return redirect('/dashboard');
         } else {
             // Tangani kasus di mana peran pengguna bukan 'user' atau 'admin'
             return redirect('')->withErrors('Role pengguna tidak diketahui!')->withInput();
@@ -48,6 +48,6 @@ class SesiController extends Controller
 }
     function logout(){
         Auth::logout();
-        return redirect('');
+        return redirect('/');
     }
 }

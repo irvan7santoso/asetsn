@@ -21,8 +21,8 @@ class Peminjaman extends Model
         return $this->belongsToMany(Asettlsn::class, 'item_peminjaman','id_peminjaman','id_aset')->withPivot('jumlah_dipinjam')->withTimestamps();
     }
 
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id_user');  // Foreign key yang benar adalah 'id_user'
     }
 }

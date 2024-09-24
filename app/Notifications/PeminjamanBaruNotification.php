@@ -28,12 +28,17 @@ class PeminjamanBaruNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'message' => 'Peminjaman baru oleh ' . $this->peminjaman->nama_peminjam . 
+                         ' untuk program ' . $this->peminjaman->program . 
+                         ' dari ' . $this->peminjaman->tgl_peminjaman .
+                         ' s/d ' . $this->peminjaman->tgl_kembali,
             'id_peminjaman' => $this->peminjaman->id_peminjaman,
             'nama_peminjam' => $this->peminjaman->nama_peminjam,
             'program' => $this->peminjaman->program,
             'tgl_peminjaman' => $this->peminjaman->tgl_peminjaman,
             'tgl_kembali' => $this->peminjaman->tgl_kembali,
             'status' => $this->peminjaman->status,
+            'url' => route('approve.show', $this->peminjaman->id_peminjaman), // URL ke detail peminjaman menggunakan route approve
         ];
-    }
+    }    
 }

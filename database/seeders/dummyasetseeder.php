@@ -29,7 +29,7 @@ class DummyAsetSeeder extends Seeder
                 'namabarang' => $items[array_rand($items)] . ' ' . rand(1000, 9999) . ' ' . chr(rand(65, 90)) . chr(rand(65, 90)), // Random license or asset code
                 'tahun' => rand(1995, 2024),
                 'jumlah' => rand(1, 10), // Random quantity
-                'jumlah_tersedia' => rand(0, 10), // Random available quantity
+                'jumlah_tersedia' => null,
                 'nomorinventaris' => null,
                 'nomorseri' => null,
                 'harga' => rand(1000000, 50000000), // Random price

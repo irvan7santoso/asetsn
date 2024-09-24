@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use App\Models\Peminjaman;
 use Illuminate\Pagination\Paginator;
+use App\Observers\PeminjamanObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFour();
         Carbon::setLocale('id');
+        Peminjaman::observe(PeminjamanObserver::class);
     }
 }

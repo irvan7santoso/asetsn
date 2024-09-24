@@ -20,15 +20,17 @@ class AsettlsnController extends Controller
         $query = Asettlsn::query();
 
         if ($katakunci) {
-            $query->where('namabarang', 'like', "%$katakunci%")
-                ->orWhere('tahun', 'like', "%$katakunci%")
-                ->orWhere('jumlah', 'like', "%$katakunci%")
-                ->orWhere('nomorinventaris', 'like', "%$katakunci%")
-                ->orWhere('nomorseri', 'like', "%$katakunci%")
-                ->orWhere('harga', 'like', "%$katakunci%")
-                ->orWhere('lokasi', 'like', "%$katakunci%")
-                ->orWhere('kondisi', 'like', "%$katakunci%");
-        }
+            $katakunci = strtolower($katakunci); // Ubah input pencarian menjadi huruf kecil
+        
+            $query->whereRaw('LOWER(namabarang) like ?', ["%{$katakunci}%"])
+                  ->orWhere('tahun', 'like', "%$katakunci%")
+                  ->orWhere('jumlah', 'like', "%$katakunci%")
+                  ->orWhere('nomorinventaris', 'like', "%$katakunci%")
+                  ->orWhere('nomorseri', 'like', "%$katakunci%")
+                  ->orWhere('harga', 'like', "%$katakunci%")
+                  ->orWhereRaw('LOWER(lokasi) like ?', ["%{$katakunci}%"])
+                  ->orWhereRaw('LOWER(kondisi) like ?', ["%{$katakunci}%"]);
+        }        
 
         if ($sortby) {
             $query->orderBy($sortby, $order);

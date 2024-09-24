@@ -8,6 +8,7 @@
                 <h2>Detail Permohonan Peminjaman</h2>
                 <p><strong>Nama Peminjam:</strong> {{ $peminjaman->nama_peminjam }}</p>
                 <p><strong>Nomor HP Peminjam:</strong> {{ $peminjaman->nomor_hp_peminjam }}</p>
+                <p><strong>Email Peminjam:</strong> {{ $peminjaman->email_peminjam }}</p>
 
                 @if(empty($peminjaman->judul_kegiatan) && empty($peminjaman->lokasi_kegiatan))
                     <p><strong>Alasan Peminjaman:</strong> {{ $peminjaman->program }}</p>
@@ -73,10 +74,12 @@
 
                 <div class="text-right">
                     <a href="{{ route('approve.index') }}" class="btn btn-primary mt-3">Kembali</a>
-                    @if ($peminjaman->status == 'Pengembalian')
-                        <button type="submit" name="action" value="terima_pengembalian" class="btn btn-success">Terima Pengembalian</button>
-                    @else
-                        <button type="submit" class="btn btn-success">Submit</button>
+                    @if ($peminjaman->status != 'Selesai')
+                        @if ($peminjaman->status == 'Pengembalian')
+                            <button type="submit" name="action" value="terima_pengembalian" class="btn btn-success">Terima Pengembalian</button>
+                        @else
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        @endif
                     @endif
                 </div>
                 </form>

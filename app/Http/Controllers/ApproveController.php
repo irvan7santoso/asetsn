@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Asettlsn;
-use App\Models\ItemPeminjaman;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use App\Models\ItemPeminjaman;
+use App\Notifications\PengembalianNotification;
+use App\Notifications\PeminjamanUserSTNotification;
 
 class ApproveController extends Controller
 {
@@ -52,30 +55,42 @@ class ApproveController extends Controller
         $peminjaman = Peminjaman::with('asettlsns')->findOrFail($id);
         $status = $request->input('status');
         $peminjaman->catatan = $request->input('catatan');
-
+        
+        // Update status
         if ($request->input('action') == 'terima_pengembalian') {
             $status = 'Selesai';
         }
-
+    
         if ($status === 'Disetujui') {
             foreach ($peminjaman->asettlsns as $asset) {
                 $item = ItemPeminjaman::where('id_peminjaman', $peminjaman->id_peminjaman)
                                     ->where('id_aset', $asset->id)
                                     ->first();
                 if ($item) {
-                    $asset->reduceStock($item->jumlah_dipinjam);
+                    $asset->reduceStock($item->jumlah_dipinjam); // Mengurangi stok aset
                 }
             }
         }
-
+    
+        // Atur status "Melebihi batas waktu" jika sudah lewat tgl_kembali
         if ($status !== 'Selesai' && $peminjaman->tgl_kembali < now()) {
             $peminjaman->status = 'Melebihi batas waktu';
+        } elseif ($status === 'Pending' && $peminjaman->tgl_peminjaman < now()) {
+            // Tambahkan kondisi jika status "Pending" dan sudah lewat tgl_peminjaman
+            $peminjaman->status = 'Expired';
         } else {
             $peminjaman->status = $status;
         }
 
         $peminjaman->save();
 
+    
+        // Kirim notifikasi hanya jika status adalah 'Disetujui' atau 'Ditolak'
+        if (in_array($status, ['Disetujui', 'Ditolak'])) {
+            $user = $peminjaman->user;  // Mengambil user yang melakukan peminjaman
+            $user->notify(new PeminjamanUserSTNotification($peminjaman, $status));
+        }
+    
         return redirect()->route('approve.index')->with('success', 'Status permohonan berhasil diperbarui.');
     }
 
@@ -96,6 +111,11 @@ class ApproveController extends Controller
         if ($request->input('action') == 'kembalikan') {
             // Update status to "Pengembalian"
             $peminjaman->status = 'Pengembalian';
+            // Kirim notifikasi ke admin
+            $admins = User::where('role', 'admin')->get(); // Asumsi admin memiliki role 'admin'
+            foreach ($admins as $admin) {
+                $admin->notify(new PengembalianNotification($peminjaman));
+            }
         } elseif ($request->input('action') == 'batalkan_pengembalian') {
             // Update status to "Dipinjam"
             $peminjaman->status = 'Dipinjam';
@@ -112,6 +132,6 @@ class ApproveController extends Controller
 
         $peminjaman->save();
 
-        return redirect()->route('peminjaman.user', ['status' => 'Pending'])->with('success', 'Status permohonan berhasil diperbarui.');
+        return redirect()->route('peminjaman.user', ['status' => 'Semua'])->with('success', 'Status permohonan berhasil diperbarui.');
     }
 }

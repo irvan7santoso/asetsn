@@ -9,12 +9,12 @@ class UserController extends Controller
 {
     function index()
     {
-        return view('welcome');
+        return view('/dashboard');
     }
 
     function user()
     {
-        return view('welcome');
+        return view('/dashboard');
     }
 
     function admin()
@@ -28,6 +28,7 @@ class UserController extends Controller
         return response()->json([
             'nama' => $user->nama,
             'nomor_hp' => $user->nomor_hp,
+            'email'=> $user->email,
         ]);
     }
 }
