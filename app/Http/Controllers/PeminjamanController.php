@@ -17,10 +17,15 @@ class PeminjamanController extends Controller
     public function index(Request $request)
     {
         $katakunci = $request->katakunci;
+        
         if (strlen($katakunci)) {
-            $assets = Asettlsn::where('namabarang', 'ILIKE',"%$katakunci%")->where('jumlah_tersedia','>',0)->get();
+            $assets = Asettlsn::where('namabarang', 'ILIKE', "%$katakunci%")
+                ->where('jumlah_tersedia', '>', 0)
+                ->paginate(10); // Batasi 10 data per halaman
         } else {
-            $assets = Asettlsn::where('kondisi','Baik')->where('jumlah_tersedia','>',0)->get();
+            $assets = Asettlsn::where('kondisi', 'Baik')
+                ->where('jumlah_tersedia', '>', 0)
+                ->paginate(10); // Batasi 10 data per halaman
         }
 
         $cart = session('cart', []); // Ambil keranjang dari session

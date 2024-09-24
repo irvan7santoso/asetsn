@@ -26,14 +26,17 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/',[SesiController::class,'login']);
 });
 
-Route::middleware(['auth'])->group(function(){
-    Route::get('/home',function(){return redirect('/dashboard');});
-    Route::get('/logout',[SesiController::class,'logout']);
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'admin'])->group(function(){
     Route::resource('/Asettlsn', AsettlsnController::class);
     Route::get('/approve', [ApproveController::class, 'index'])->name('approve.index');
     Route::get('/approve/{id}', [ApproveController::class, 'show'])->name('approve.show');
     Route::post('/approve/{id}', [ApproveController::class, 'update'])->name('approve.update');
+});
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/home',function(){return redirect('/dashboard');});
+    Route::get('/logout',[SesiController::class,'logout']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/peminjamansaya', [ApproveController::class, 'userIndex'])->name('peminjaman.user');
     Route::get('/peminjaman/{id}/detail', [ApproveController::class, 'userShow'])->name('peminjaman.userShow');
     Route::post('/peminjaman/{id}/update', [ApproveController::class, 'userUpdate'])->name('peminjaman.userUpdate');

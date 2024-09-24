@@ -14,17 +14,16 @@ class ApproveController extends Controller
 {
     public function index(Request $request)
     {
-        $status = $request->input('status', 'Semua'); // Default to 'Semua' if no status is provided
+        $status = $request->input('status', 'Semua'); // Default to 'Semua' jika tidak ada status yang diberikan
         
         if ($status === 'Semua') {
-            $peminjaman = Peminjaman::orderBy('created_at', 'desc')->get();
+            $peminjaman = Peminjaman::orderBy('created_at', 'desc')->paginate(10); // Tambahkan pagination
         } else {
-            $peminjaman = Peminjaman::where('status', $status)->orderBy('created_at', 'desc')->get();
+            $peminjaman = Peminjaman::where('status', $status)->orderBy('created_at', 'desc')->paginate(10); // Tambahkan pagination
         }
-
+    
         return view('approve.daftar', compact('peminjaman', 'status'));
     }
-
 
     public function userIndex(Request $request)
     {
@@ -33,11 +32,11 @@ class ApproveController extends Controller
 
         // Jika status adalah 'Semua', ambil semua data peminjaman berdasarkan user
         if ($status === 'Semua') {
-            $peminjaman = Peminjaman::where('id_user', $user->id)->orderBy('created_at', 'desc')->get();
+            $peminjaman = Peminjaman::where('id_user', $user->id)->orderBy('created_at', 'desc')->paginate(10);
         } else {
             $peminjaman = Peminjaman::where('id_user', $user->id)
                             ->where('status', $status)
-                            ->get(); // Mengambil data peminjaman berdasarkan user dan status
+                            ->paginate(10); // Mengambil data peminjaman berdasarkan user dan status
         }
 
         return view('peminjaman.daftaruser', compact('peminjaman', 'status'));

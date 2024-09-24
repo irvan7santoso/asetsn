@@ -40,8 +40,8 @@ class UpdatePeminjamanStatus extends Command
             ->where('tgl_kembali', '<=', $today)
             ->update(['status' => 'Selesai']);
 
-        // Ubah status "Pending" atau "Disetujui" menjadi "Selesai" jika sudah mencapai tanggal kembali
-        Peminjaman::whereIn('status', 'Pending')
+        // Ubah status "Pending" menjadi "Expired" jika sudah melebihi tanggal peminjaman
+        Peminjaman::where('status', 'Pending')
             ->where('tgl_peminjaman', '<', $today)
             ->update(['status' => 'Expired']);
 
