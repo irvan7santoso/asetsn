@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/peminjaman/create', [PeminjamanController::class, 'store']);
     Route::get('/api/user-info', [UserController::class, 'getUserInfo']);
     Route::get('/akun', function () {return view('akun.akun');});
-    Route::get('/semuanotifikasi', function () {return view('akun.semuanotifikasi');}); 
+    Route::get('/semuanotifikasi', [NotificationController::class, 'allNotifications'])->name('notifications.all');
     Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 
     Route::get('export', [AsettlsnController::class, 'asetexport'])->name('Asettlsn.asetexport');

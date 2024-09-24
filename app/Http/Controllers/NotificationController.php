@@ -6,6 +6,17 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    public function allNotifications()
+    {
+        // Ambil semua notifikasi user yang sedang login, termasuk yang sudah dibaca
+        $user = auth()->user();
+        $unreadNotifications = $user->unreadNotifications;
+        $readNotifications = $user->readNotifications;
+
+        // Kirim notifikasi ke view
+        return view('akun.semuanotifikasi', compact('unreadNotifications', 'readNotifications'));
+    }
+    
     public function markAsRead($notificationId)
     {
         // Temukan notifikasi berdasarkan ID

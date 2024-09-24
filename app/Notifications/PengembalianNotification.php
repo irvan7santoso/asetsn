@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\PengembalianMailable;
 use App\Models\Peminjaman;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,7 +33,7 @@ class PengembalianNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database']; // Kirim notifikasi via database
+        return ['database', 'mail']; // Kirim notifikasi via database
     }
 
     /**
@@ -49,5 +50,10 @@ class PengembalianNotification extends Notification
             // Ubah URL ke route 'approve.show'
             'url' => route('approve.show', ['id' => $this->peminjaman->id_peminjaman]), 
         ];
+    }
+
+    public function toMail($notifiable)
+    {
+        return (new PengembalianMailable($this->peminjaman))->to($notifiable->email);
     }
 }

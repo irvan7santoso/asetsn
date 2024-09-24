@@ -57,7 +57,7 @@
 										</a>
 									</li>
 								@endforeach
-								<li><a href="/semuanotifikasi" class="more">Lihat semua notifikasi</a></li>
+								<li><a href="{{ route('notifications.all') }}">Semua Notifikasi</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -146,7 +146,7 @@
 										</a>
 									</li>
 								@endforeach
-								<li><a href="/semuanotifikasi" class="more">Lihat semua notifikasi</a></li>
+								<li><a href="{{ route('notifications.all') }}">Semua Notifikasi</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">

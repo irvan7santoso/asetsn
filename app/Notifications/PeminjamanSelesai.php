@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Mail\PeminjamanSelesaiMailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Mail;
 
-class PeminjamanSelesai extends Notification
+class PeminjamanSelesai extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -22,31 +23,48 @@ class PeminjamanSelesai extends Notification
 
     public function via($notifiable)
     {
-        return ['database']; // Menambahkan channel 'database' untuk menyimpan notifikasi ke database
+        // Menggunakan 'mail' dan 'database' sebagai channel notifikasi
+        return ['mail', 'database'];
+    }
+
+    public function toMail($notifiable)
+    {
+        if ($this->isAdmin) {
+            // Jika notifikasi untuk admin, kirim ke email admin dari tabel users
+            return (new PeminjamanSelesaiMailable($this->peminjaman, $this->isAdmin))
+                        ->to($notifiable->email); // Email admin dari tabel users
+        } else {
+            // Jika notifikasi untuk peminjam, kirim ke email_peminjam dari tabel peminjaman
+            return (new PeminjamanSelesaiMailable($this->peminjaman, $this->isAdmin))
+                        ->to($this->peminjaman->email_peminjam); // Email peminjam dari tabel peminjaman
+        }
     }
 
     public function toDatabase($notifiable)
     {
-        // Membuat URL yang mengarah ke rute 'approve.show' dengan ID peminjaman
-        $url = route('approve.show', ['id' => $this->peminjaman->id_peminjaman]);
-
         if ($this->isAdmin) {
+            // URL untuk admin
+            $url = route('approve.show', ['id' => $this->peminjaman->id_peminjaman]);
+
             return [
                 'message' => 'Peminjaman oleh ' . $this->peminjaman->nama_peminjam . ' telah selesai.',
                 'peminjaman_id' => $this->peminjaman->id_peminjaman,
                 'nama_peminjam' => $this->peminjaman->nama_peminjam,
                 'program' => $this->peminjaman->program,
                 'type' => 'selesai',
-                'url' => $url, // Menambahkan URL dinamis ke approve.show
+                'url' => $url,
+            ];
+        } else {
+            // URL untuk peminjam
+            $url = route('peminjaman.userShow', ['id' => $this->peminjaman->id_peminjaman]);
+
+            return [
+                'message' => 'Peminjaman anda untuk program ' . $this->peminjaman->program . ' telah selesai.',
+                'peminjaman_id' => $this->peminjaman->id_peminjaman,
+                'program' => $this->peminjaman->program,
+                'type' => 'selesai',
+                'url' => $url,
             ];
         }
-
-        return [
-            'message' => 'Peminjaman anda untuk program ' . $this->peminjaman->program . ' telah selesai.',
-            'peminjaman_id' => $this->peminjaman->id_peminjaman,
-            'program' => $this->peminjaman->program,
-            'type' => 'selesai',
-            'url' => $url, // Menambahkan URL dinamis ke approve.show
-        ];
     }
 }

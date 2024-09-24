@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Mail\PeminjamanUserSTMailable;
+use Illuminate\Support\Facades\Mail;
 
 class PeminjamanUserSTNotification extends Notification
 {
@@ -18,7 +20,7 @@ class PeminjamanUserSTNotification extends Notification
     {
         // Hanya kirim notifikasi untuk status 'Disetujui' atau 'Ditolak'
         if (!in_array($status, ['Disetujui', 'Ditolak'])) {
-            return; // Jika status bukan 'Disetujui' atau 'Ditolak', keluar dari constructor
+            return;
         }
 
         $this->peminjaman = $peminjaman;
@@ -27,7 +29,14 @@ class PeminjamanUserSTNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database']; // Menyimpan notifikasi ke dalam database
+        return ['database', 'mail']; // Mengirim via database dan email
+    }
+
+    public function toMail($notifiable)
+    {
+        // Kirim email menggunakan Mailable
+        return (new PeminjamanUserSTMailable($this->peminjaman, $this->status))
+                    ->to($this->peminjaman->email_peminjam);
     }
 
     public function toDatabase($notifiable)

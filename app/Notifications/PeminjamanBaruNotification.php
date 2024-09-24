@@ -2,10 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Mail\PeminjamanBaruMailable;
+use App\Models\Peminjaman;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\DatabaseMessage;
+use Illuminate\Support\Facades\Mail;
 
 class PeminjamanBaruNotification extends Notification
 {
@@ -13,18 +15,25 @@ class PeminjamanBaruNotification extends Notification
 
     public $peminjaman;
 
-    public function __construct($peminjaman)
+    public function __construct(Peminjaman $peminjaman)
     {
         $this->peminjaman = $peminjaman;
     }
 
-    // Menentukan channel yang akan digunakan, dalam hal ini menggunakan database
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail', 'database']; // Menggunakan mail dan database sebagai channel
     }
 
-    // Isi data notifikasi yang akan disimpan ke database
+    // Kirim notifikasi melalui email
+    public function toMail($notifiable)
+    {
+        // Mengembalikan instance dari Mailable, bukan memanggil Mail::send() secara manual
+        return (new PeminjamanBaruMailable($this->peminjaman))
+                ->to($notifiable->email); // Pastikan email dikirim ke admin
+    }
+
+    // Simpan notifikasi ke database
     public function toDatabase($notifiable)
     {
         return [
@@ -38,7 +47,7 @@ class PeminjamanBaruNotification extends Notification
             'tgl_peminjaman' => $this->peminjaman->tgl_peminjaman,
             'tgl_kembali' => $this->peminjaman->tgl_kembali,
             'status' => $this->peminjaman->status,
-            'url' => route('approve.show', $this->peminjaman->id_peminjaman), // URL ke detail peminjaman menggunakan route approve
+            'url' => route('approve.show', $this->peminjaman->id_peminjaman),
         ];
-    }    
+    }
 }

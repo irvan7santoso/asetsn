@@ -29,50 +29,52 @@ use App\Models\asettlsn;
             <!-- OVERVIEW -->
             <div class="panel panel-headline">
                 <div class="panel-body">
-                    <h1>Dashboard Aset Yayasan Satunama</h1>
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="metric">
-                                <a href="{{ route('Asettlsn.index') }}" style="text-decoration: none; color: inherit;">
-                                    <span class="icon"><i class="lnr lnr-apartment"></i></span>
-                                    <p>
-                                        <span class="number">{{ asettlsn::count() }}</span>
-                                        <span class="title">Aset Dimiliki</span>
-                                    </p>
-                                </a>
+                        <h1>Dashboard Aset Yayasan Satunama</h1>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="metric">
+                                    <a href="{{ route('Asettlsn.index') }}" style="text-decoration: none; color: inherit;">
+                                        <span class="icon"><i class="lnr lnr-apartment"></i></span>
+                                        <p>
+                                            <span class="number">{{ asettlsn::count() }}</span>
+                                            <span class="title">Aset Dimiliki</span>
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric">
-                                <a href="{{ route('Asettlsn.index', ['katakunci' => 'Rusak']) }}" style="text-decoration: none; color: inherit;">
-                                    <span class="icon"><i class="lnr lnr-construction"></i></span>
-                                    <p>
-                                        <span class="number">{{ asettlsn::where('kondisi', 'Rusak')->count() }}</span>
-                                        <span class="title">Aset Rusak</span>
-                                    </p>
-                                </a>
+                            <div class="col-md-3">
+                                <div class="metric">
+                                    <a href="{{ route('Asettlsn.index', ['katakunci' => 'Rusak']) }}" style="text-decoration: none; color: inherit;">
+                                        <span class="icon"><i class="lnr lnr-construction"></i></span>
+                                        <p>
+                                            <span class="number">{{ asettlsn::where('kondisi', 'Rusak')->count() }}</span>
+                                            <span class="title">Aset Rusak</span>
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric">
-                                <a href="{{ route('approve.index', ['status' => 'Dipinjam']) }}" style="text-decoration: none; color: inherit;">
-                                    <span class="icon"><i class="lnr lnr-users"></i></span>
-                                    <p>
-                                        <span class="number">{{ $asetdipinjam }}</span>
-                                        <span class="title">Aset Dipinjam</span>
-                                    </p>
-                                </a>
+                            <div class="col-md-3">
+                                <div class="metric">
+                                    <a href="{{ route('approve.index', ['status' => 'Dipinjam']) }}" style="text-decoration: none; color: inherit;">
+                                        <span class="icon"><i class="lnr lnr-users"></i></span>
+                                        <p>
+                                            <span class="number">{{ $asetdipinjam }}</span>
+                                            <span class="title">Aset Dipinjam</span>
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric">
-                                <a href="{{ route('approve.index', ['status' => 'Melebihi batas waktu']) }}" style="text-decoration: none; color: inherit;">
-                                    <span class="icon"><i class="lnr lnr-store"></i></span>
-                                    <p>
-                                        <span class="number">{{ $asetbelumdikembalikan }}</span>
-                                        <span class="title">Pinjaman Melebihi Batas Waktu</span>
-                                    </p>
-                                </a>
+                            <div class="col-md-3">
+                                <div class="metric">
+                                    <a href="{{ route('approve.index', ['status' => 'Melebihi batas waktu']) }}" style="text-decoration: none; color: inherit;">
+                                        <span class="icon"><i class="lnr lnr-store"></i></span>
+                                        <p>
+                                            <span class="number">{{ $asetbelumdikembalikan }}</span>
+                                            <span class="title">Pinjaman Melebihi Batas Waktu</span>
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
