@@ -46,19 +46,25 @@
 								<li>
 									<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
 										<strong>Notifikasi</strong>
+										<form action="{{ route('notifications.markAllAsRead') }}" method="POST" style="display:inline;">
+											@csrf
+											<button type="submit" class="btn btn-link" style="padding: 0; border: none;">
+												<i class="lnr lnr-checkmark-circle" style="font-size: 18px; color: #000000;"></i>
+											</button>
+										</form>
 									</div>
 								</li>
 								@foreach (auth()->user()->unreadNotifications as $notification)
 									<li>
 										<a href="{{ isset($notification->data['url']) ? route('notifications.read', $notification->id) : '#' }}" class="notification-item">
 											<span class="dot bg-info"></span>
-											{{ $notification->data['message'] }} <!-- Menampilkan pesan dari notifikasi -->
+											{{ $notification->data['message'] }}
 											<small>{{ $notification->created_at->diffForHumans() }}</small>
 										</a>
 									</li>
 								@endforeach
 								<li><a href="{{ route('notifications.all') }}">Semua Notifikasi</a></li>
-							</ul>
+							</ul>													
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ asset ('assets/img/user.png') }}" class="img-circle" alt="Avatar"> <span>{{ Auth::user()-> nama}}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
@@ -72,6 +78,13 @@
 			</div>
 		</nav>
 		<!-- END NAVBAR -->
+
+		@if(session('success'))
+		<div class="alert alert-success">
+			{{ session('success') }}
+		</div>
+		@endif
+
 		<!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
@@ -135,19 +148,25 @@
 								<li>
 									<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
 										<strong>Notifikasi</strong>
+										<form action="{{ route('notifications.markAllAsRead') }}" method="POST" style="display:inline;">
+											@csrf
+											<button type="submit" class="btn btn-link" style="padding: 0; border: none;">
+												<i class="lnr lnr-checkmark-circle" style="font-size: 18px; color: #000100;"></i>
+											</button>
+										</form>
 									</div>
 								</li>
 								@foreach (auth()->user()->unreadNotifications as $notification)
 									<li>
 										<a href="{{ isset($notification->data['url']) ? route('notifications.read', $notification->id) : '#' }}" class="notification-item">
 											<span class="dot bg-info"></span>
-											{{ $notification->data['message'] }} <!-- Menampilkan pesan dari notifikasi -->
+											{{ $notification->data['message'] }}
 											<small>{{ $notification->created_at->diffForHumans() }}</small>
 										</a>
 									</li>
 								@endforeach
 								<li><a href="{{ route('notifications.all') }}">Semua Notifikasi</a></li>
-							</ul>
+							</ul>													
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ asset ('assets/img/user.png') }}" class="img-circle" alt="Avatar"> <span>{{ Auth::user()-> nama}}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
@@ -161,6 +180,13 @@
 			</div>
 		</nav>
 		<!-- END NAVBAR -->
+
+		@if(session('success'))
+		<div class="alert alert-success">
+			{{ session('success') }}
+		</div>
+		@endif
+
 		<!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
@@ -196,6 +222,14 @@
 </body>
 @endif
 <style>
+	.lnr-checkmark-circle {
+    cursor: pointer;  /* Mengubah kursor menjadi pointer saat diarahkan */
+	}
+
+	button:hover .lnr-checkmark-circle {
+		color: #000000;  /* Ubah warna saat di-hover */
+	}
+
 	button {
 		color: #fff;
 	}

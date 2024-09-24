@@ -32,4 +32,16 @@ class NotificationController extends Controller
 
         return redirect()->back()->with('error', 'Notifikasi tidak ditemukan.');
     }
+
+    public function markAllAsRead()
+    {
+        // Ambil semua notifikasi yang belum terbaca dari user yang sedang login
+        $user = auth()->user();
+
+        // Tandai semua notifikasi sebagai terbaca
+        $user->unreadNotifications->markAsRead();
+
+        // Redirect ke halaman sebelumnya dengan pesan sukses
+        return redirect()->back()->with('success', 'Semua notifikasi telah ditandai sebagai terbaca.');
+    }
 }

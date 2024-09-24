@@ -35,7 +35,7 @@ use App\Models\asettlsn;
                             <div class="col-md-3">
                                 <div class="metric">
                                     <a href="{{ route('Asettlsn.index') }}" style="text-decoration: none; color: inherit;">
-                                        <span class="icon"><i class="lnr lnr-apartment"></i></span>
+                                        <span class="icon"><i class="lnr lnr-laptop-phone"></i></span>
                                         <p>
                                             <span class="number">{{ asettlsn::count() }}</span>
                                             <span class="title">Aset Dimiliki</span>
@@ -46,7 +46,7 @@ use App\Models\asettlsn;
                             <div class="col-md-3">
                                 <div class="metric">
                                     <a href="{{ route('Asettlsn.index', ['katakunci' => 'Rusak']) }}" style="text-decoration: none; color: inherit;">
-                                        <span class="icon"><i class="lnr lnr-construction"></i></span>
+                                        <span class="icon"><i class="lnr lnr-trash"></i></span>
                                         <p>
                                             <span class="number">{{ asettlsn::where('kondisi', 'Rusak')->count() }}</span>
                                             <span class="title">Aset Rusak</span>
@@ -68,7 +68,7 @@ use App\Models\asettlsn;
                             <div class="col-md-3">
                                 <div class="metric">
                                     <a href="{{ route('approve.index', ['status' => 'Melebihi batas waktu']) }}" style="text-decoration: none; color: inherit;">
-                                        <span class="icon"><i class="lnr lnr-store"></i></span>
+                                        <span class="icon"><i class="lnr lnr-construction"></i></span>
                                         <p>
                                             <span class="number">{{ $asetbelumdikembalikan }}</span>
                                             <span class="title">Pinjaman Melebihi Batas Waktu</span>

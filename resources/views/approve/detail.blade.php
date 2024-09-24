@@ -73,7 +73,7 @@
                 @endif
 
                 <div class="text-right">
-                    <a href="{{ route('approve.index') }}" class="btn btn-primary mt-3">Kembali</a>
+                    <a href="{{ route('approve.index') }}" class="btn btn-danger mt-3">Kembali</a>
                     @if ($peminjaman->status != 'Selesai')
                         @if ($peminjaman->status == 'Pengembalian')
                             <button type="submit" name="action" value="terima_pengembalian" class="btn btn-success">Terima Pengembalian</button>

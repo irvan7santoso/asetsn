@@ -66,23 +66,20 @@
                         </div>
                     </div>
                     @endif
-                    @if($peminjaman->status == 'Dipinjam')
-                        <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
-                            <button type="submit" class="btn btn-warning" name="action" value="kembalikan">Kembalikan</button>
-                        </div>
-                    @elseif($peminjaman->status == 'Pengembalian')
-                        <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
-                            <button type="submit" class="btn btn-info" name="action" value="batalkan_pengembalian">Batalkan Pengembalian</button>
-                        </div>
-                    @else
-                        <div class="text-right">
-                            <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
+                
+                    <div class="text-right">
+                        <a href="{{ route('peminjaman.user', ['status' => 'Semua']) }}" class="btn btn-danger">Batal</a>
+                
+                        @if($peminjaman->status == 'Dipinjam')
+                            <button type="submit" class="btn btn-success" name="action" value="kembalikan">Kembalikan</button>
+                        @elseif($peminjaman->status == 'Pengembalian')
+                            <button type="submit" class="btn btn-success" name="action" value="batalkan_pengembalian">Batalkan Pengembalian</button>
+                        @elseif(!in_array($peminjaman->status, ['Pending', 'Ditolak', 'Selesai', 'Melebihi batas waktu', 'Expired']))
+                            <!-- Tombol simpan hanya muncul jika status bukan salah satu dari yang dicek -->
                             <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
-                    @endif
-                </form>
+                        @endif
+                    </div>
+                </form>                            
             </div>
         </div>
     </div>

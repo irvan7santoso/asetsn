@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/akun', function () {return view('akun.akun');});
     Route::get('/semuanotifikasi', [NotificationController::class, 'allNotifications'])->name('notifications.all');
     Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+
 
     Route::get('export', [AsettlsnController::class, 'asetexport'])->name('Asettlsn.asetexport');
     Route::get('/export-peminjaman', [ExportController::class, 'exportPeminjaman'])->name('export.peminjaman');
