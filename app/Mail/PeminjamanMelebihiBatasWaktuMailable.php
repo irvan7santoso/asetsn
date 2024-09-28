@@ -41,7 +41,7 @@ class PeminjamanMelebihiBatasWaktuMailable extends Mailable
             : route('peminjaman.userShow', ['id' => $this->peminjaman->id_peminjaman]);
     
         return $this->subject($subject)
-                    ->view('emails.peminjaman_melebihi_batas_waktu')
+                    ->view('email.peminjamanmelebihibataswaktu')
                     ->with([
                         'peminjaman' => $this->peminjaman,
                         'isAdmin' => $this->isAdmin,
