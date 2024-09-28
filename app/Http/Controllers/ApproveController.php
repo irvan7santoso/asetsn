@@ -71,13 +71,18 @@ class ApproveController extends Controller
             }
         }
     
-        // Atur status "Melebihi batas waktu" jika sudah lewat tgl_kembali
-        if ($status !== 'Selesai' && $peminjaman->tgl_kembali < now()) {
+        // Atur status "Melebihi batas waktu" jika status adalah 'Dipinjam' dan tgl_kembali sudah lewat
+        if ($peminjaman->status === 'Dipinjam' && $peminjaman->tgl_kembali < now()) {
             $peminjaman->status = 'Melebihi batas waktu';
-        } elseif ($status === 'Pending' && $peminjaman->tgl_peminjaman < now()) {
-            // Tambahkan kondisi jika status "Pending" dan sudah lewat tgl_peminjaman
+        } 
+        
+        // Atur status "Expired" jika status "Pending" atau "Disetujui" dan sudah lewat tgl_peminjaman
+        elseif (in_array($peminjaman->status, ['Pending', 'Disetujui']) && $peminjaman->tgl_peminjaman < now()) {
             $peminjaman->status = 'Expired';
-        } else {
+        } 
+        
+        // Jika tidak ada kondisi di atas, tetap update status dari input
+        else {
             $peminjaman->status = $status;
         }
 
@@ -127,6 +132,16 @@ class ApproveController extends Controller
             } else if ($userStatus === 'Ditolak') {
                 $peminjaman->status = 'Ditolak';
             }
+        }
+
+         // Atur status "Melebihi batas waktu" jika status adalah 'Dipinjam' dan tgl_kembali sudah lewat
+        if ($peminjaman->status === 'Dipinjam' && $peminjaman->tgl_kembali < now()) {
+            $peminjaman->status = 'Melebihi batas waktu';
+        } 
+        
+        // Atur status "Expired" jika status "Pending" atau "Disetujui" dan sudah lewat tgl_peminjaman
+        elseif (in_array($peminjaman->status, ['Pending', 'Disetujui']) && $peminjaman->tgl_peminjaman < now()) {
+            $peminjaman->status = 'Expired';
         }
 
         $peminjaman->save();

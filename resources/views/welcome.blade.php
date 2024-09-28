@@ -115,8 +115,9 @@ use App\Models\asettlsn;
                                                     $peminjaman->status == 'Pengembalian' ? 'pengembalian' : (
                                                     $peminjaman->status == 'Selesai' ? 'selesai' : (
                                                     $peminjaman->status == 'Ditolak' ? 'ditolak' : (
+                                                    $peminjaman->status == 'Expired' ? 'expired' : (
                                                     $peminjaman->status == 'Melebihi batas waktu' ? 'melebihibataswaktu' : ''
-                                                    )))))) }}">
+                                                    ))))))) }}">
                                                     {{ ucfirst($peminjaman->status) }}
                                                 </span>
                                             </td>
@@ -241,8 +242,9 @@ use App\Models\asettlsn;
                                             $peminjaman->status == 'Pengembalian' ? 'pengembalian' : (
                                             $peminjaman->status == 'Selesai' ? 'selesai' : (
                                             $peminjaman->status == 'Ditolak' ? 'ditolak' : (
+                                            $peminjaman->status == 'Expired' ? 'expired' : (
                                             $peminjaman->status == 'Melebihi batas waktu' ? 'melebihibataswaktu' : ''
-                                            )))))) }}">
+                                            ))))))) }}">
                                             {{ ucfirst($peminjaman->status) }}
                                         </span>
                                     </td>
@@ -308,9 +310,15 @@ use App\Models\asettlsn;
         background-color: #ff0000; /* Warna merah */
         color: #fff; /* Warna teks */
     }
+
     .label-melebihibataswaktu {
         background-color: #000000; /* Warna hitam */
         color: #fff; /* Warna teks */
+    }
+
+    .label-expired {
+    background-color: #4f4f4f; /* Warna merah */
+    color: #fff; /* Warna teks */
     }
 </style>
 @endsection

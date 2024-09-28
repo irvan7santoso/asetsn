@@ -118,6 +118,11 @@
     color: #fff; /* Warna teks */
 }
 
+.label-expired {
+    background-color: #4f4f4f; /* Warna merah */
+    color: #fff; /* Warna teks */
+}
+
 .pagination {
 display: flex;
 justify-content: center;
