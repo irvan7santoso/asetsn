@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('lokasi_kegiatan')->nullable();
             $table->date('tgl_peminjaman');
             $table->date('tgl_kembali');
-            $table->binary('lampiran')->nullable();
+            $table->string('lampiran')->nullable();
             $table->text('catatan')->nullable();
             $table->enum('status',['Pending','Disetujui','Dipinjam','Ditolak','Pengembalian','Selesai','Melebihi batas waktu', 'Expired'])->default('Pending');
             $table->timestamps();

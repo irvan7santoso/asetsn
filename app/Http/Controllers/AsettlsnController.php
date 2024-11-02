@@ -72,9 +72,11 @@ class AsettlsnController extends Controller
         Session::flash('kondisi',$request->kondisi);
 
         $request->validate([
-            'namabarang'=>'required:asettlsn,namabarang'
+            'namabarang'=>'required:asettlsn,namabarang',
+            'jumlah'=>'required:asettlsn,jumlah'
         ],[
-            'namabarang.required'=>'Nama Barang Wajib Diisi!'
+            'namabarang.required'=>'Nama Barang Wajib Diisi!',
+            'jumlah.required'=>'Jumlah Barang Wajib Diisi!'
         ]);
         $data = [
             'namabarang' => $request->namabarang,

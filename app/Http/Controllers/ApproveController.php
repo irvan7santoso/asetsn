@@ -12,14 +12,35 @@ use App\Notifications\PeminjamanUserSTNotification;
 
 class ApproveController extends Controller
 {
+    // Tambahkan metode checkStatus untuk mengatur status berdasarkan tanggal
+    public function checkStatus($peminjaman)
+    {
+        // Atur status "Melebihi batas waktu" jika status adalah 'Dipinjam' dan tgl_kembali sudah lewat
+        if ($peminjaman->status === 'Dipinjam' && $peminjaman->tgl_kembali < now()) {
+            $peminjaman->status = 'Melebihi batas waktu';
+        }
+        
+        // Atur status "Expired" jika status "Pending" atau "Disetujui" dan sudah lewat tgl_peminjaman
+        elseif (in_array($peminjaman->status, ['Pending', 'Disetujui']) && $peminjaman->tgl_kembali < now()) {
+            $peminjaman->status = 'Expired';
+        }
+        
+        $peminjaman->save();
+    }
+
     public function index(Request $request)
     {
-        $status = $request->input('status', 'Semua'); // Default to 'Semua' jika tidak ada status yang diberikan
+        $status = $request->input('status', 'Semua');
         
         if ($status === 'Semua') {
-            $peminjaman = Peminjaman::orderBy('created_at', 'desc')->paginate(10); // Tambahkan pagination
+            $peminjaman = Peminjaman::orderBy('created_at', 'desc')->paginate(10);
         } else {
-            $peminjaman = Peminjaman::where('status', $status)->orderBy('created_at', 'desc')->paginate(10); // Tambahkan pagination
+            $peminjaman = Peminjaman::where('status', $status)->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+        // Lakukan pengecekan status untuk setiap peminjaman
+        foreach ($peminjaman as $p) {
+            $this->checkStatus($p);
         }
     
         return view('approve.daftar', compact('peminjaman', 'status'));
@@ -27,21 +48,24 @@ class ApproveController extends Controller
 
     public function userIndex(Request $request)
     {
-        $user = auth()->user(); // Mendapatkan user yang sedang login
-        $status = $request->input('status', 'Semua'); // Mendapatkan status dari request atau default ke 'Semua'
+        $user = auth()->user();
+        $status = $request->input('status', 'Semua');
 
-        // Jika status adalah 'Semua', ambil semua data peminjaman berdasarkan user
         if ($status === 'Semua') {
             $peminjaman = Peminjaman::where('id_user', $user->id)->orderBy('created_at', 'desc')->paginate(10);
         } else {
             $peminjaman = Peminjaman::where('id_user', $user->id)
                             ->where('status', $status)
-                            ->paginate(10); // Mengambil data peminjaman berdasarkan user dan status
+                            ->paginate(10);
+        }
+
+        // Lakukan pengecekan status untuk setiap peminjaman
+        foreach ($peminjaman as $p) {
+            $this->checkStatus($p);
         }
 
         return view('peminjaman.daftaruser', compact('peminjaman', 'status'));
     }
-
 
     public function show($id)
     {

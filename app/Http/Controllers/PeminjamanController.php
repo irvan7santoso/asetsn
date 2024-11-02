@@ -73,7 +73,7 @@ class PeminjamanController extends Controller
                 'date',
                 'after_or_equal:tgl_peminjaman'
             ],
-            'lampiran' => 'required|file',
+            'lampiran' => 'required|file|mimes:jpg,jpeg,png|max:2048',  // Lampiran harus berupa gambar
             'barang' => 'required|array',
             'barang.*.id' => 'required|integer|exists:asettlsn,id',
             'barang.*.jumlah_dipinjam' => 'required|integer|min:1',
@@ -87,22 +87,24 @@ class PeminjamanController extends Controller
 
         $validatedData = $request->validate($rules);
 
+        // Tentukan data peminjam berdasarkan jenis
         if ($request->jenis_peminjam == 'karyawan') {
             $nama_peminjam = $request->nama_karyawan;
             $nomor_hp_peminjam = $request->nomor_hp_karyawan;
-            $email_peminjam = Auth::user()->email;  // Ambil email dari tabel users
+            $email_peminjam = Auth::user()->email;
             $program = $validatedData['program'] ?? '';
             $judul_kegiatan = $request->judul_kegiatan ?? '';
             $lokasi_kegiatan = $request->lokasi_kegiatan ?? '';
         } else {
             $nama_peminjam = $request->nama_peminjam;
             $nomor_hp_peminjam = $request->nomor_hp_peminjam;
-            $email_peminjam = $request->email_peminjam;  // Email manual dari non-karyawan
+            $email_peminjam = $request->email_peminjam;
             $program = $validatedData['program_non_karyawan'] ?? '';
             $judul_kegiatan = $validatedData['judul_kegiatan_non_karyawan'] ?? '';
             $lokasi_kegiatan = $validatedData['lokasi_kegiatan_non_karyawan'] ?? '';
-        }        
+        }
 
+        // Buat instance peminjaman baru
         $peminjaman = new Peminjaman();
         $peminjaman->nama_peminjam = $nama_peminjam;
         $peminjaman->nomor_hp_peminjam = $nomor_hp_peminjam;
@@ -113,9 +115,19 @@ class PeminjamanController extends Controller
         $peminjaman->tgl_peminjaman = $validatedData['tgl_peminjaman'];
         $peminjaman->tgl_kembali = $validatedData['tgl_kembali'];
         $peminjaman->id_user = auth()->id();
-        $peminjaman->lampiran = $request->file('lampiran')->store('lampiran');
-        $peminjaman->save();
+        $peminjaman->save(); // Simpan terlebih dahulu untuk mendapatkan id_peminjaman
 
+        // Proses lampiran dengan nama kustom berdasarkan id_peminjaman
+        if ($request->hasFile('lampiran')) {
+            $lampiran = $request->file('lampiran');
+            $extension = $lampiran->getClientOriginalExtension();
+            $filename = 'lampiran-' . $peminjaman->id_peminjaman . '.' . $extension; // Nama file: lampiran-id_peminjaman.jpg
+            $path = $lampiran->storeAs('lampiran', $filename, 'public');
+            $peminjaman->lampiran = $path; // Simpan path file di database
+            $peminjaman->save(); // Simpan ulang dengan path lampiran yang benar
+        }
+
+        // Simpan item peminjaman
         foreach ($validatedData['barang'] as $barang) {
             $itemPeminjaman = new ItemPeminjaman();
             $itemPeminjaman->id_aset = $barang['id'];
@@ -124,16 +136,16 @@ class PeminjamanController extends Controller
             $itemPeminjaman->save();
         }
 
-        // Mengirim notifikasi ke admin
-        $admins = User::where('role', 'admin')->get(); // Mengambil semua user yang merupakan admin
-
+        // Kirim notifikasi ke admin
+        $admins = User::where('role', 'admin')->get(); // Ambil semua user yang memiliki peran admin
         foreach ($admins as $admin) {
             $admin->notify(new PeminjamanBaruNotification($peminjaman));
         }
 
+        // Hapus keranjang setelah peminjaman berhasil
         session()->forget('cart');
 
-        return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui');
+        return redirect('/peminjaman')->with('success', 'Permohonan peminjaman berhasil dibuat, mohon tunggu permohonan disetujui.');
     }
 
 }

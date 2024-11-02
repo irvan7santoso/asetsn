@@ -23,6 +23,6 @@ class Peminjaman extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');  // Foreign key yang benar adalah 'id_user'
+        return $this->belongsTo(User::class, 'id_user'); 
     }
 }

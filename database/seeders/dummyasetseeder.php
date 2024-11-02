@@ -12,34 +12,27 @@ class DummyAsetSeeder extends Seeder
      */
     public function run(): void
     {
-        $asetdata = [];
-
-        // Example data for locations, conditions, and pemakai
-        $locations = ['Garasi', 'Kantor', 'Gudang', 'Kelas Besar', 'Aula'];
-        $conditions = ['Baik', 'Sedang', 'Rusak'];
-        $items = [
-            'Mobil', 'Motor', 'Kursi', 'Meja','AC', 'Proyektor', 'Mouse', 'Laptop',
-            'HP', 'Printer', 'Rol Kabel', 'Kipas angin', 'Kulkas', 'Lemari', 'Kasur', 'Komputer', 'Dispenser',
-            'Mouse', 'Scanner', 'Voice Recorder', 'Papan Tulis', 'CCTV', 'Gedung'
+        // Data aset yang diinput secara manual
+        $asetdata = [
+            [
+                'namabarang' => 'Laptop 1234 AB',
+                'tahun' => 2020,
+                'jumlah' => 5,
+                'harga' => 10000000,
+                'lokasi' => 'Kantor',
+                'kondisi' => 'Baik',
+            ],
+            [
+                'namabarang' => 'Printer 5678 CD',
+                'jumlah' => 2,
+                'harga' => 5000000,
+                'lokasi' => 'Garasi',
+                'kondisi' => 'Sedang',
+            ],
+            // Tambahkan data aset lainnya sesuai kebutuhan
         ];
 
-        // Loop to generate 50 dummy data
-        for ($i = 1; $i <= 50; $i++) {
-            $asetdata[] = [
-                'namabarang' => $items[array_rand($items)] . ' ' . rand(1000, 9999) . ' ' . chr(rand(65, 90)) . chr(rand(65, 90)), // Random license or asset code
-                'tahun' => rand(1995, 2024),
-                'jumlah' => rand(1, 10), // Random quantity
-                'jumlah_tersedia' => null,
-                'nomorinventaris' => null,
-                'nomorseri' => null,
-                'harga' => rand(1000000, 50000000), // Random price
-                'lokasi' => $locations[array_rand($locations)],
-                'pemakai' => '', // Blank pemakai
-                'kondisi' => $conditions[array_rand($conditions)], // Random condition
-            ];
-        }
-
-        // Insert the generated data into the database
+        // Insert data aset ke dalam database
         foreach ($asetdata as $val) {
             Asettlsn::create($val);
         }

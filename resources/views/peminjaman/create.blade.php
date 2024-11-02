@@ -88,9 +88,8 @@
                     </div>
                     <div class="form-group">
                         <label for="lampiran">Lampiran</label>
-                        <input type="file" class="form-control" id="lampiran" name="lampiran" required>
+                        <input type="file" class="form-control" id="lampiran" name="lampiran" accept=".jpg,.jpeg,.png" required>
                     </div>
-                    
                     <h3>Aset yang akan dipinjam</h3>
                     <table class="table">
                         <thead>

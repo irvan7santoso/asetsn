@@ -6,9 +6,9 @@
 <div class="main-content">
     @include('layouts.alert')
     <div class="container-fluid">
-        <h1>Tambah Aset/Peralatan Baru</h1>
         <div class="panel">
             <div class="panel-body">
+                <h1>Tambah Aset/Peralatan Baru</h1>
                 <h4>Nama Aset/Alat</h4>
                 <input type="text" class="form-control" name='namabarang' value="{{ Session::get ('namabarang') }}" id='namabarang'>
                 <h4>Tahun</h4>

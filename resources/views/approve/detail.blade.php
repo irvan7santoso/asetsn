@@ -24,6 +24,16 @@
 
                 <p><strong>Tanggal Peminjaman:</strong> {{ $peminjaman->tgl_peminjaman }}</p>
                 <p><strong>Tanggal Kembali:</strong> {{ $peminjaman->tgl_kembali }}</p>
+                @if($peminjaman->lampiran)
+                    <div>
+                        <p><strong>Lampiran:</strong></p>
+                        <a href="{{ asset('storage/' . $peminjaman->lampiran) }}" target="_blank">
+                            <img src="{{ asset('storage/' . $peminjaman->lampiran) }}" alt="Lampiran Gambar" style="max-width: 200px;">
+                        </a>
+                    </div>
+                @else
+                    <p>Tidak ada lampiran tersedia.</p>
+                @endif
             </div>
         </div>
         <div class="panel">
