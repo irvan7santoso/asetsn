@@ -76,7 +76,7 @@
                             <button type="submit" class="btn btn-success" name="action" value="batalkan_pengembalian">Batalkan Pengembalian</button>
                         @elseif(!in_array($peminjaman->status, ['Pending', 'Ditolak', 'Selesai', 'Melebihi batas waktu', 'Expired']))
                             <!-- Tombol simpan hanya muncul jika status bukan salah satu dari yang dicek -->
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
                         @endif
                     </div>
                 </form>                            
@@ -84,4 +84,10 @@
         </div>
     </div>
 </div>
+<style>
+    .form-check-inline {
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
 @endsection

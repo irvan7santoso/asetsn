@@ -21,16 +21,16 @@ class dummyusersseeder extends Seeder
                 'nama'=>'Admin PAK',
                 'nomor_hp'=>'08612387122',
                 'departemen'=>'PAK',
-                'jabatan'=>'Anggota'
+                'jabatan'=>'Kepala Departemen PAK'
              ],
              [
-                'email'=>'rehanmahardika07@gmail.com',
+                'email'=>'irvan.santoso@students.ukdw.ac.id',
                 'password'=>bcrypt('123456'),
                 'role'=>'user',
-                'nama'=>'Rehan Mahardika',
+                'nama'=>'Irvan Santoso',
                 'nomor_hp'=>'08633234442',
                 'departemen'=>'HRD',
-                'jabatan'=>'Anggota'
+                'jabatan'=>'Karyawan'
              ]
             
         ];
