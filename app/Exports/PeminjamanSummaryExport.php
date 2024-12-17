@@ -16,9 +16,10 @@ class PeminjamanSummaryExport implements FromCollection, WithHeadings, WithMappi
      */
     public function collection()
     {
-        // Ambil data aset yang paling sering dipinjam menggunakan agregasi
         return DB::table('item_peminjaman')
             ->join('asettlsn', 'item_peminjaman.id_aset', '=', 'asettlsn.id')
+            ->join('peminjaman', 'item_peminjaman.id_peminjaman', '=', 'peminjaman.id_peminjaman') // Gunakan kolom yang benar
+            ->whereNotIn('peminjaman.status', ['Pending', 'Ditolak']) // Filter status
             ->select('asettlsn.namabarang', DB::raw('SUM(item_peminjaman.jumlah_dipinjam) as total_dipinjam'))
             ->groupBy('asettlsn.namabarang')
             ->orderByDesc('total_dipinjam')
